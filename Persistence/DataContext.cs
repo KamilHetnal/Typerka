@@ -11,9 +11,11 @@ namespace Persistence
     {
         public DataContext(DbContextOptions options) : base(options)
         {
-            
+
         }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<Player> Players { get; set; }
+
     }
 }
