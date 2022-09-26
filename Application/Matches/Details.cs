@@ -13,11 +13,14 @@ using Persistence;
 
 namespace Application.Matches
 {
-    public class List
+    public class Details
     {
-        public class Query : IRequest<Result<List<Match>>> {}
+        public class Query : IRequest<Result<Match>>
+        {
+            public Guid Id { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<Match>>>
+        public class Handler : IRequestHandler<Query, Result<Match>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -28,11 +31,11 @@ namespace Application.Matches
                 _mapper = mapper;
             }
 
-            public async Task<Result<List<Match>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<Match>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<Match>>.Success(await _context.Matches
-                    .ProjectTo<Match>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken));
+                return Result<Match>.Success(await _context.Matches
+                .ProjectTo<Match>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(x => x.Id == request.Id));
             }
         }
     }

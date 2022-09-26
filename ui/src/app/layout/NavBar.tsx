@@ -12,6 +12,7 @@ export  default function NavBar() {
                 <Menu.Item as={NavLink} to='/matches' name="Mecze" />
                 <Menu.Item as={NavLink} to='/teams' name="Reprezentacje" />
                 <Menu.Item as={NavLink} to='/groups' name="Grupy" />
+                <Menu.Item as={NavLink} to='/errors' name="Błędy" />
                 {/* <Menu.Item>
                     <Button positive content="Dodaj" />
                 </Menu.Item> */}

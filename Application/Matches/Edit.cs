@@ -6,17 +6,27 @@ using System.Threading.Tasks;
 using Application.Core;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
-namespace Application.Teams
+namespace Application.Matches
 {
     public class Edit
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Team Team { get; set; }
+            public Match Match { get; set; }
         }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Match).SetValidator(new MatchValidator());
+            }
+        }
+
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
@@ -27,19 +37,18 @@ namespace Application.Teams
                 _context = context;
                 _mapper = mapper;
             }
-
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var team = await _context.Teams.FindAsync(request.Team.Id);
+                var match = await _context.Matches.FindAsync(request.Match.Id);
 
-                if (team == null)
+                if (match == null)
                     return null;
 
-                _mapper.Map(request.Team, team);
+                _mapper.Map(request.Match, match);
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Nie udało się edytować drużyny");
+                if (!result) return Result<Unit>.Failure("Nie udało się edytować meczu"); 
 
                 return Result<Unit>.Success(Unit.Value);
             }

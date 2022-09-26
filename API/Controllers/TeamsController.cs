@@ -16,20 +16,20 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Team>>> GetTeams()
         {
-            return await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Team>> GetTeam(Guid id)
         {
-            return await Mediator.Send(new Details.Query{Id = id});
+            return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTeam(Guid id, Team team)
         {
             team.Id = id;
-            return Ok(await Mediator.Send(new Edit.Command{Team = team}));
+            return HandleResult(await Mediator.Send(new Edit.Command{Team = team}));
         }
     }
 }
