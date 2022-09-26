@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { Match } from '../models/Match';
 import { Team } from '../models/Team';
 
 const sleep = (delay: number) => {
@@ -34,8 +35,15 @@ const Teams = {
     update: (team: Team) => requests.put<void>(`teams/${team.id}`, team)
 }
 
+const Matches = {
+    list: () => requests.get<Match[]>('matches'),
+    details: (id: string) => requests.get<Team>(`matches/${id}`),
+    update: (match: Team) => requests.put<void>(`matches/${match.id}`, match)
+}
+
 const agent = {
-    Teams
+    Teams,
+    Matches
 }
 
 export default agent;

@@ -5,6 +5,7 @@ import { Container } from 'semantic-ui-react';
 import { Route } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import TeamDetails from '../../features/teams/details/TeamDetails';
+import MatchesDashboard from '../../features/matches/dashboard/MatchesDashboard';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <NavBar />
           <Container style={{ marginTop: '7em' }}>
             <Route exact path={'/teams'} component={TeamDashboard} />
+            <Route exact path={'/matches'} component={MatchesDashboard} />
             <Route path={'/teams/:id'} component={TeamDetails} />
           </Container>
         </>

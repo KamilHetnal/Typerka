@@ -1,4 +1,3 @@
-import { group } from 'console';
 import { observer } from 'mobx-react-lite';
 import { Table } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
