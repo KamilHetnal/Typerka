@@ -16,12 +16,12 @@ export default observer(function TeamList() {
                     <Table.Header>
                         <Table.Row textAlign='center' >
                             <Table.HeaderCell width={8}> Grupa {group} </Table.HeaderCell>
-                            <Table.HeaderCell >M</Table.HeaderCell>
+                            <Table.HeaderCell >RM</Table.HeaderCell>
                             <Table.HeaderCell >W</Table.HeaderCell>
                             <Table.HeaderCell >R</Table.HeaderCell>
                             <Table.HeaderCell >P</Table.HeaderCell>
                             <Table.HeaderCell >B</Table.HeaderCell>
-                            <Table.HeaderCell >P</Table.HeaderCell>
+                            <Table.HeaderCell >Pkt</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body >
