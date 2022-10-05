@@ -1,16 +1,32 @@
+import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Button, Container, Header } from 'semantic-ui-react'
+import { useStore } from '../../app/stores/store'
+import LoginForm from '../users/LoginForm'
+import RegisterForm from '../users/RegisterForm'
 
-export default function HomePage() {
+export default observer(function HomePage() {
+    const { userStore, modalStore } = useStore();
+
     return (
-        <Container style={{marginTop: '7em'}}>
-            <h1>
+        <Container style={{ marginTop: '7em' }} text>
+            <Header>
                 Home page
-            </h1>
-            <h2>
-                Przejdz do <Link to='/teams'> aplikacji</Link>
-            </h2>
+            </Header>
+            {userStore.isLoggedin ? (
+                <>
+                    <Header as='h2' content="Bo pierwszy milion trzeba wygrać" />
+                </>
+            ) : (
+                <>
+                <Button onClick={() => modalStore.openModal(<LoginForm />)} size='huge' >
+                    Zaloguj się
+                </Button>
+                <Button onClick={() => modalStore.openModal(<RegisterForm />)} size='huge' >
+                    Rejestacja
+                </Button>
+                </>
+            )}
         </Container>
     )
-}
+})

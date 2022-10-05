@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import { history } from '../..';
 import { Match } from '../models/Match';
 import { Team } from '../models/Team';
+import { User, UserFromValues } from '../models/User';
 import { store } from '../stores/store';
+import { history } from '../..';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -11,7 +12,14 @@ const sleep = (delay: number) => {
   });
 };
 
+
 axios.defaults.baseURL = 'http://localhost:5000/api/';
+
+axios.interceptors.request.use(config => {
+  const token = store.commonStore.token;
+  if (token) config.headers!.Authorization = `Bearer ${token}`
+  return config;
+})
 
 axios.interceptors.response.use(
   async (response) => {
@@ -64,6 +72,13 @@ const requests = {
   delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
+const Account = {
+  current: () => requests.get<User>('/account'),
+  login: (user: UserFromValues) => requests.post<User>('/account/login', user),
+  register: (user: UserFromValues) =>
+    requests.post<User>('/account/register', user),
+};
+
 const Teams = {
   list: () => requests.get<Team[]>('teams'),
   details: (id: string) => requests.get<Team>(`teams/${id}`),
@@ -77,6 +92,7 @@ const Matches = {
 };
 
 const agent = {
+  Account,
   Teams,
   Matches,
 };

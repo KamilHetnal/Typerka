@@ -1,0 +1,23 @@
+import { useField } from "formik";
+import React from "react";
+import { Form } from "semantic-ui-react";
+
+interface Props {
+    placeholder: string;
+    name:string;
+    type?: string;
+    label?: string;
+}
+
+export default function MyNumberInput(props: Props) {
+    const [field, meta] = useField(props.name);
+    return (
+        <Form.Field error={meta.touched && !!meta.error}>
+            <label>{props.label}</label>
+            <input {...field} {...props} type="number" />
+            {meta.touched && meta.error ? (
+                <label> {meta.error}</label>
+            ): null}
+        </Form.Field>
+    )
+}

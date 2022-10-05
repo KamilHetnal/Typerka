@@ -39,13 +39,13 @@ namespace API.Controllers
         {
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                ModelState.AddModelError("email", "Email taken");
+                ModelState.AddModelError("email", "Ten email jest już zajęty");
                 return ValidationProblem();
             }
 
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.UserName))
             {
-                ModelState.AddModelError("username", "Username taken");
+                ModelState.AddModelError("username", "Ta nazwa użytkownika jest już zajęta");
                 return ValidationProblem();
             }
 
