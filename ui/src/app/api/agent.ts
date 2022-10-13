@@ -5,6 +5,9 @@ import { Team } from '../models/Team';
 import { User, UserFromValues } from '../models/User';
 import { store } from '../stores/store';
 import { history } from '../..';
+import { Photo, Profile } from '../models/Profile';
+import { Role, RoleFormValues } from '../models/Role';
+import { UserRole } from '../models/UserRole';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -69,7 +72,7 @@ const requests = {
   post: <T>(url: string, body: {}) =>
     axios.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
 const Account = {
@@ -91,10 +94,46 @@ const Matches = {
   update: (match: Team) => requests.put<void>(`matches/${match.id}`, match),
 };
 
+const Profiles = {
+  list: () => requests.get<Profile[]>('/profiles/'),
+  get: (userName: string) => requests.get<Profile>(`/profiles/${userName}`),
+  delete: (id: string) => requests.del<void>(`/profiles/${id}`),
+  uploadPhoto: (file: Blob) => {
+    let formData = new FormData();
+    formData.append('File', file);
+    return axios.post<Photo>('photos', formData, {
+      headers: { 'Content-type': 'multipart/form-data' },
+    });
+  },
+  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+};
+
+const Roles = {
+  list: () => requests.get<Role[]>('/roles'),
+  userRoleList: () => requests.get<UserRole[]>('/roles/userroles'),
+  details: (id: string) => requests.get<Role>(`/roles/${id}`),
+  create: (role: RoleFormValues) => requests.post<void>(`/roles/`, role),
+  update: (role: RoleFormValues) => requests.put<void>(`/roles/${role.id}`, role),
+  delete: (id: string) => requests.del<void>(`/roles/${id}`),
+  addToRole: (roleName: string, userName: string) =>
+  requests.post<void>(
+    `/roles/${roleName}/${userName}/addtorole`,
+    {}
+  ),
+  removeFromRole: (roleName: string, userName: string) =>
+  requests.post<void>(
+    `/roles/${roleName}/${userName}/removefromrole`,
+    {}
+  ),  
+};
+
 const agent = {
   Account,
   Teams,
   Matches,
+  Profiles,
+  Roles
 };
 
 export default agent;

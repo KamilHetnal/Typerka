@@ -18,7 +18,7 @@ namespace API.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentityCore<AppUser>(opt => 
+            services.AddIdentityCore<AppUser>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
             })
@@ -35,6 +35,13 @@ namespace API.Extensions
                     ValidateIssuer = false,
                     ValidateAudience = false,
                 };
+            });
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("ReqAdminRole", policy => 
+                {
+                    policy.RequireRole("admin");
+                });
             });
             services.AddScoped<TokenService>();
 

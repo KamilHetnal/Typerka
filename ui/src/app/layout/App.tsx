@@ -13,6 +13,7 @@ import ServerError from '../../features/errors/ServerError';
 import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import ModalContainer from '../common/modals/modalContainer';
+import ProfileDashboard from '../../features/profiles/dashboard/ProfileDashboard';
 
 function App() {
   const {commonStore, userStore} = useStore();
@@ -38,6 +39,7 @@ function App() {
           <Route exact path={'/teams'} component={TeamDashboard} />
           <Route exact path={'/matches'} component={MatchesDashboard} />
           <Route exact path={'/login'} component={LoginForm} />
+          <Route exact path={'/users'} component={ProfileDashboard} />
           <Route path={'/teams/:id'} component={TeamDetails} />
           <Route path='/errors' component={TestErrors} />
           <Route path='/server-error' component={ServerError} />
