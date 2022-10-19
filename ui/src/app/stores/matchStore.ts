@@ -1,6 +1,6 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
-import { Match } from '../models/Match';
+import { Match, MatchFormValues } from '../models/Match';
 
 export default class MatchStore {
   matches: Match[] = [];
@@ -14,7 +14,7 @@ export default class MatchStore {
   }
   get matchesByDate() {
     return Array.from(this.matchRegistry.values()).sort((a,b) => 
-        Date.parse(a.matchDate) - Date.parse(b.matchDate))
+        a.matchDate.getTime()- b.matchDate.getTime())
   }
 
   loadMatches = async () => {
@@ -31,7 +31,72 @@ export default class MatchStore {
     }
   };
 
+  loadMatch = async (id: string) => {
+    let match = this.getMatch(id);
+    if (match) {
+      this.match = match;
+      return match;
+    } else {
+      this.setLoadingInitial(true);
+      try {
+        const match = await agent.Matches.details(id);
+        runInAction(() => {
+          this.match = match;
+          this.setMatch(match);
+        });
+        this.setLoadingInitial(false);
+        return this.match;
+      } catch (error) {
+        console.log(error);
+        runInAction(() => this.setLoadingInitial(false));
+      }
+    }
+  };
+
+  createMatch = async (match: MatchFormValues) => {
+    try {
+      await agent.Matches.create(match);
+      const newMatch = new Match(match);
+      this.setMatch(newMatch);
+      runInAction(() => {
+        this.match = newMatch;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  updateMatch = async (match: MatchFormValues) => {
+    try {
+      await agent.Matches.update(match);
+      runInAction(() => {
+        if (match.id) {
+          let updatedMatch = {
+            ...this.getMatch(match.id),
+            ...match,
+          };
+          this.matchRegistry.set(match.id, updatedMatch as Match);
+          this.match = updatedMatch as Match;
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteMatch = async (id: string) => {
+    try {
+      await agent.Matches.delete(id);
+      runInAction(() => {
+        this.matchRegistry.delete(id);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   private setMatch = (match: Match) => {
+    match.matchDate = new Date(match.matchDate!)
     return this.matchRegistry.set(match.id, match);
   }
 

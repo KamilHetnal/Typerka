@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import { Match } from '../models/Match';
+import { Match, MatchFormValues } from '../models/Match';
 import { Team } from '../models/Team';
 import { User, UserFromValues } from '../models/User';
 import { store } from '../stores/store';
@@ -90,8 +90,10 @@ const Teams = {
 
 const Matches = {
   list: () => requests.get<Match[]>('matches'),
-  details: (id: string) => requests.get<Team>(`matches/${id}`),
-  update: (match: Team) => requests.put<void>(`matches/${match.id}`, match),
+  details: (id: string) => requests.get<Match>(`matches/${id}`),
+  create: (match: MatchFormValues) => requests.post<void>(`/matches/`, match),
+  update: (match: MatchFormValues) => requests.put<void>(`matches/${match.id}`, match),
+  delete: (id: string) => requests.del<void>(`/matches/${id}`),
 };
 
 const Profiles = {

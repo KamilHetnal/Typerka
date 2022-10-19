@@ -1,6 +1,9 @@
 import React from 'react'
 import { Item, Table } from 'semantic-ui-react'
 import { Match } from '../../../app/models/Match'
+import MatchAdminBar from './MatchAdminBar'
+import {format} from 'date-fns'
+import { NavLink } from 'react-router-dom'
 
 interface Props {
     match: Match
@@ -9,10 +12,15 @@ interface Props {
 export default function MatchListitem({ match }: Props) {
     return (
         <Table unstackable>
-            <Table.Header>
-                <Table.Row >
-                    <Table.HeaderCell colSpan='2'>
-                        {match.matchDate.slice(5, 16).replace('T', ' :')}
+            <Table.Header >
+                <Table.Row>
+                    <Table.HeaderCell>
+                        <Item as={NavLink} to={`/matches/${match.id}`}>
+                            {format(match.matchDate, 'dd-MM: H:mm')}
+                        </Item>
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                        <MatchAdminBar match={match} />
                     </Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
@@ -21,8 +29,8 @@ export default function MatchListitem({ match }: Props) {
                     <Table.Cell>
                         <Item.Group>
                             <Item>
-                                <Item.Image size='mini' src={`/assets/flags/${match.homeTeam.name.toLocaleLowerCase()}.png`} />
-                                <Item.Content verticalAlign='middle' content={match.homeTeam.name} />
+                                <Item.Image size='mini' src={`/assets/flags/${match.homeTeam?.name.toLocaleLowerCase()}.png`} />
+                                <Item.Content verticalAlign='middle' content={match.homeTeam?.name} />
                             </Item>
                         </Item.Group>
                     </Table.Cell>
@@ -34,8 +42,8 @@ export default function MatchListitem({ match }: Props) {
                     <Table.Cell>
                         <Item.Group>
                             <Item>
-                                <Item.Image size='mini' src={`/assets/flags/${match.awayTeam.name.toLocaleLowerCase()}.png`} />
-                                <Item.Content verticalAlign='middle' content={match.awayTeam.name} />
+                                <Item.Image size='mini' src={`/assets/flags/${match.awayTeam?.name.toLocaleLowerCase()}.png`} />
+                                <Item.Content verticalAlign='middle' content={match.awayTeam?.name} />
                             </Item>
                         </Item.Group>
                     </Table.Cell>

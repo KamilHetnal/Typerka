@@ -30,13 +30,13 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Create.Command { Match = match }));
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> EditMatch(Guid id, Match match)
         {
             match.Id = id;
             return HandleResult(await Mediator.Send(new Edit.Command { Match = match }));
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatch(Guid id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));

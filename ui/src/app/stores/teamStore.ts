@@ -28,6 +28,17 @@ export default class TeamStore {
     );
   }
 
+  loadTeamsArray = async () => {
+    try {
+      const teams = await agent.Teams.list();
+      teams.forEach(team => {
+        this.teams.push(team)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   loadTeams = async () => {
     this.setLoadingInitial(true);
     try {

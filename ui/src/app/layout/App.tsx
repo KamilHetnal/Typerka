@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import NavBar from './NavBar';
 import TeamDashboard from '../../features/teams/dashboard/TeamDashboard';
 import { Container } from 'semantic-ui-react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import TeamDetails from '../../features/teams/details/TeamDetails';
 import MatchesDashboard from '../../features/matches/dashboard/MatchesDashboard';
@@ -14,8 +14,11 @@ import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import ModalContainer from '../common/modals/modalContainer';
 import ProfileDashboard from '../../features/profiles/dashboard/ProfileDashboard';
+import MatchForm from '../../features/matches/form/MatchForm';
+import MatchDetails from '../../features/matches/details/MatchDetails';
 
 function App() {
+  const location = useLocation();
   const {commonStore, userStore} = useStore();
 
   useEffect(() => {
@@ -37,7 +40,11 @@ function App() {
         <Switch>
           <Route exact path={'/'} component={HomePage} />
           <Route exact path={'/teams'} component={TeamDashboard} />
+
           <Route exact path={'/matches'} component={MatchesDashboard} />
+          <Route exact path='/matches/:id' component={MatchDetails} />
+          <Route key={location.key} path={['/createMatch', '/manage_match/:id']} component={MatchForm} />
+
           <Route exact path={'/login'} component={LoginForm} />
           <Route exact path={'/users'} component={ProfileDashboard} />
           <Route path={'/teams/:id'} component={TeamDetails} />
