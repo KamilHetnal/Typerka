@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Bets;
+using Domain;
 
-namespace Domain
+namespace Application.Matches
 {
-    public class Match
+    public class MatchDto
     {
         public Guid Id { get; set; }
         public Team HomeTeam { get; set; }
@@ -13,6 +15,6 @@ namespace Domain
         public DateTime MatchDate { get; set; }
         public int HomeGoals { get; set; }
         public int AwayGoals { get; set; }
-        public ICollection<Bet> MatchBets { get; set; } = new List<Bet>();
+        public ICollection<BetDto> MatchBets { get; set; } = new List<BetDto>();
     }
 }

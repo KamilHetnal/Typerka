@@ -46,6 +46,7 @@ export default observer(function MatchForm({ id }: Props) {
         id: uuid(),
       };
       createMatch(newMatch).then(() => history.push(`/matches/${newMatch.id}`))
+      console.log(newMatch)
     } else {
       updateMatch(match).then(() => history.push(`/matches/${match.id}`))
     }
@@ -74,7 +75,7 @@ export default observer(function MatchForm({ id }: Props) {
               placeholder="Gospodarz" 
               name='homeTeam'
               options={teams.map(t => ({  
-                "key": t.id,
+                "key": `h${t.id}`,
                 "text": t.name,
                 "value": t}
               ))}
@@ -83,7 +84,7 @@ export default observer(function MatchForm({ id }: Props) {
               placeholder="Gość" 
               name='awayTeam'
               options={teams.map(t => ({  
-                "key": t.id,
+                "key": `a${t.id}`,
                 "text": t.name,
                 "value": t}
               ))}

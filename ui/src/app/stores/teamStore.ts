@@ -14,7 +14,7 @@ export default class TeamStore {
   }
 
   get teamsInGroups() {
-    return Array.from(this.teamRegistry.values()).sort((a, b) => a.group.localeCompare(b.group))
+    return Array.from(this.teamRegistry.values()).sort((a, b) => a.group?.localeCompare(b.group))
   }
 
   get groupedTeams() {

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221020195549_UpdateBetEntityWithOneToManyRel")]
+    partial class UpdateBetEntityWithOneToManyRel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,19 +97,10 @@ namespace Persistence.Migrations
                     b.Property<int>("AwayScore")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("BetDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BetPoints")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("HomeScore")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("MatchId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("WinnerId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -115,8 +108,6 @@ namespace Persistence.Migrations
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("MatchId");
-
-                    b.HasIndex("WinnerId");
 
                     b.ToTable("Bets");
                 });
@@ -373,15 +364,9 @@ namespace Persistence.Migrations
                         .WithMany("MatchBets")
                         .HasForeignKey("MatchId");
 
-                    b.HasOne("Domain.Team", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId");
-
                     b.Navigation("AppUser");
 
                     b.Navigation("Match");
-
-                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Domain.Match", b =>

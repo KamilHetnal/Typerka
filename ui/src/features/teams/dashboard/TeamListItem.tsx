@@ -13,7 +13,7 @@ export default function TeamListItem({ team }: Props) {
             <Table.Cell  >
                 <Item.Group as={Link} to={`/teams/${team.id}`}>
                     <Item>
-                        <Item.Image size='mini' src={`/assets/flags/${team.name.toLocaleLowerCase()}.png`} />
+                        <Item.Image size='mini' src={`/assets/flags/${team.name?.toLocaleLowerCase()}.png`} />
                         <Item.Content verticalAlign='middle' content={team.name} />
                     </Item>
                 </Item.Group>

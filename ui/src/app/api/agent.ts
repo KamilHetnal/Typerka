@@ -8,6 +8,7 @@ import { history } from '../..';
 import { Photo, Profile } from '../models/Profile';
 import { Role, RoleFormValues } from '../models/Role';
 import { UserRole } from '../models/UserRole';
+import { Bet, BetFormValues } from '../models/Bet';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -96,6 +97,14 @@ const Matches = {
   delete: (id: string) => requests.del<void>(`/matches/${id}`),
 };
 
+const Bets = {
+  list: () => requests.get<Bet[]>('bets'),
+  details: (id: string) => requests.get<Bet>(`bets/${id}`),
+  create: (bet: BetFormValues) => requests.post<void>(`/bets/`, bet),
+  update: (bet: BetFormValues) => requests.put<void>(`bets/${bet.id}`, bet),
+  delete: (id: string) => requests.del<void>(`/bets/${id}`),
+};
+
 const Profiles = {
   list: () => requests.get<Profile[]>('/profiles/'),
   get: (userName: string) => requests.get<Profile>(`/profiles/${userName}`),
@@ -135,6 +144,7 @@ const agent = {
   Teams,
   Matches,
   Profiles,
+  Bets,
   Roles
 };
 

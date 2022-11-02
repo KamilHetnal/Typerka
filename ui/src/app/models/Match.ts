@@ -1,3 +1,4 @@
+import { Bet } from "./Bet"
 import { Team } from "./Team"
 
 export interface Match {
@@ -7,11 +8,22 @@ export interface Match {
     matchDate: Date
     homeGoals: number
     awayGoals: number
+    matchBets: Bet[]
   }
 
   export class Match implements Match {
     constructor(init?: MatchFormValues) {
         Object.assign(this, init);
+    } 
+}
+
+export class MatchDto {
+    id?: string = undefined;
+
+    constructor(match?: MatchDto) {
+        if(match) {
+            this.id = match.id;
+        }
     }
 }
 

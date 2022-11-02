@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221020111438_UpdateBetEntityForManyToManyRel")]
+    partial class UpdateBetEntityForManyToManyRel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,38 +87,24 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Bet", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("AppUserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("AppUserId")
+                    b.Property<Guid>("MatchId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AwayScore")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("BetDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BetPoints")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("HomeScore")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("MatchId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("WinnerId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
+                    b.HasKey("AppUserId", "MatchId");
 
                     b.HasIndex("MatchId");
-
-                    b.HasIndex("WinnerId");
 
                     b.ToTable("Bets");
                 });
@@ -367,21 +355,19 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.AppUser", "AppUser")
                         .WithMany("Bets")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Match", "Match")
                         .WithMany("MatchBets")
-                        .HasForeignKey("MatchId");
-
-                    b.HasOne("Domain.Team", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId");
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AppUser");
 
                     b.Navigation("Match");
-
-                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Domain.Match", b =>

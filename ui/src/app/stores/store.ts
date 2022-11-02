@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import BetStore from "./betStore";
 import CommonStore from "./commonStore";
 import MatchStore from "./matchStore";
 import ModalStore from "./modalStore";
@@ -14,6 +15,7 @@ interface Store {
     modalStore: ModalStore
     userStore: UserStore
     profileStore: ProfileStore
+    betStore: BetStore
     roleStore: RoleStore
 }
 
@@ -24,6 +26,7 @@ export const store: Store = {
     modalStore: new ModalStore(),
     userStore: new UserStore(),
     profileStore: new ProfileStore(),
+    betStore: new BetStore(),
     roleStore: new RoleStore()
 }
 

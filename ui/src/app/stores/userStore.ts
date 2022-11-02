@@ -68,4 +68,13 @@ export default class UserStore {
     
         return decoded.role;
     }
+
+    getLoggedUser() {
+        interface TokenDto {
+            nameid: string
+        }
+        const decoded = jwt_decode(localStorage.getItem('jwt')!) as TokenDto;
+    
+        return decoded.nameid;
+    }
 }

@@ -11,13 +11,16 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Matches
+namespace Application.Bets
 {
-    public class List
+    public class Details
     {
-        public class Query : IRequest<Result<List<MatchDto>>> {}
+        public class Query : IRequest<Result<BetDto>>
+        {
+            public Guid Id { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<MatchDto>>>
+        public class Handler : IRequestHandler<Query, Result<BetDto>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -28,12 +31,11 @@ namespace Application.Matches
                 _mapper = mapper;
             }
 
-            public async Task<Result<List<MatchDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<BetDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<MatchDto>>.Success(await _context.Matches
-                    .ProjectTo<MatchDto>(_mapper.ConfigurationProvider)
-                    .OrderBy(m => m.MatchDate)
-                    .ToListAsync(cancellationToken));
+                return Result<BetDto>.Success(await _context.Bets
+                .ProjectTo<BetDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(x => x.Id == request.Id));
             }
         }
     }
