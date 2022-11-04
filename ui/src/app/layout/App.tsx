@@ -16,6 +16,7 @@ import ModalContainer from '../common/modals/modalContainer';
 import ProfileDashboard from '../../features/profiles/dashboard/ProfileDashboard';
 import MatchForm from '../../features/matches/form/MatchForm';
 import MatchDetails from '../../features/matches/details/MatchDetails';
+import ProfilePage from '../../features/profiles/ProfilePage';
 
 function App() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function App() {
           <Route exact path={'/login'} component={LoginForm} />
           <Route exact path={'/users'} component={ProfileDashboard} />
           <Route path={'/teams/:id'} component={TeamDetails} />
+          <Route path='/profiles/:userName' component={ProfilePage} />
           <Route path='/errors' component={TestErrors} />
           <Route path='/server-error' component={ServerError} />
           <Route component={NotFound} />

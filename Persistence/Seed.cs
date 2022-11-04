@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCoreentity;
 
 namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context ,
-            UserManager<AppUser> userManager )
+        public static async Task SeedData(DataContext context,
+            UserManager<AppUser> userManager)
         {
             if (!userManager.Users.Any())
             {
@@ -42,7 +41,7 @@ namespace Persistence
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
             }
-            
+
             if (context.Matches.Any()) return;
 
             var teams = new List<Team>
@@ -50,7 +49,14 @@ namespace Persistence
                     new Team
                     {
                         Name = "Polska",
-                        Players = new List<Player>(),
+                        Players = new List<Player>()
+                        {
+                            // new Player
+                            // {
+                            //     Name= "Robert Lewandowski",
+                            //     Position= "Napastnik"
+                            // },
+                        },
                         Group = "C"
                     },
                     new Team
@@ -238,9 +244,9 @@ namespace Persistence
                         Name = "Korea Południowa",
                         Players = new List<Player>(),
                         Group = "H"
-                    }          
+                    }
                 };
-    
+
             var matches = new List<Match>
                 {    
                     // pierwsza kolejka
@@ -539,9 +545,88 @@ namespace Persistence
                         AwayTeam = context.Teams.SingleOrDefault(x => x.Name == "Szwajcaria"),
                         MatchDate = new DateTime(2022,12,02,20,0,0),
                     },
+
+                    // ósemiki
+
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,03,16,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,03,20,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,04,16,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,04,20,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,05,16,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,05,20,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,06,16,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,06,20,0,0)
+                    },
+
+                    // ćwiartki
+
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,09,16,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,09,20,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,10,16,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,10,20,0,0)
+                    },
+
+                    // półfinały
+
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,13,20,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,14,20,0,0)
+                    },
+
+                    // finały
+
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,17,16,0,0)
+                    },
+                    new Match
+                    {
+                        MatchDate = new DateTime(2022,12,18,16,0,0)
+                    },
                 };
 
-            //await context.Teams.AddRangeAsync(teams);
+            context.Teams.AddRange(teams);
+
+            context.SaveChanges();
+
             await context.Matches.AddRangeAsync(matches);
 
             await context.SaveChangesAsync();

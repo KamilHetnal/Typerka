@@ -5,7 +5,7 @@ import MatchAdminBar from './MatchAdminBar'
 import { format } from 'date-fns'
 import { NavLink } from 'react-router-dom'
 import { useStore } from '../../../app/stores/store'
-import { Bet, BetFormValues } from '../../../app/models/Bet'
+import { Bet } from '../../../app/models/Bet'
 
 interface Props {
     match: Match
@@ -14,14 +14,14 @@ interface Props {
 export default function MatchListitem({ match }: Props) {
     const { betStore, userStore } = useStore();
 
-    const { bet, loadBet } = betStore;
+    const { loadBet } = betStore;
     const { getLoggedUser } = userStore;
 
-    const [matchBet, setMatchBet] = useState<Bet>(new Bet);
+    const [matchBet, setMatchBet] = useState<Bet>(new Bet());
 
     const decodedUserId = getLoggedUser();
 
-    const matchBetId = match.matchBets.filter(m => m?.match?.id != match.id).find(u => u.appUserId == decodedUserId)?.id
+    const matchBetId = match.matchBets.filter(m => m?.match?.id !== match.id).find(u => u.appUserId === decodedUserId)?.id
 
     useEffect(() => {
         if (matchBetId) loadBet(matchBetId).then(matchBet => setMatchBet(new Bet(matchBet)))
@@ -31,7 +31,7 @@ export default function MatchListitem({ match }: Props) {
         <Table unstackable>
             <Table.Header >
                 <Table.Row>
-                    <Table.HeaderCell>
+                    <Table.HeaderCell colSpan='2'>
                         <Item as={NavLink} to={`/matches/${match.id}`}>
                             {format(match.matchDate, 'dd-MM: H:mm')}
                         </Item>

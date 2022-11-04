@@ -47,6 +47,8 @@ namespace Application.Bets
 
                 _mapper.Map(request.Bet, bet);
 
+                bet.BetDate = DateTime.Now;
+
                 //var match = await _context.Matches.FindAsync(bet.Match.Id);
 
                 // if (DateTime.Now >= match.MatchDate)

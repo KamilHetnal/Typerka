@@ -46,7 +46,6 @@ export default observer(function MatchForm({ id }: Props) {
         id: uuid(),
       };
       createMatch(newMatch).then(() => history.push(`/matches/${newMatch.id}`))
-      console.log(newMatch)
     } else {
       updateMatch(match).then(() => history.push(`/matches/${match.id}`))
     }
@@ -67,7 +66,7 @@ export default observer(function MatchForm({ id }: Props) {
                 showTimeSelect
                 timeFormat='p'
                 timeCaption='Początek'
-                dateFormat='dd-mm-yyyy H:mm'
+                dateFormat='dd-MM-yyyy H:mm'
             />
             <MyNumberInput placeholder='Gole Gospodarza' name='homeGoals' />
             <MyNumberInput placeholder='Gole Gościa' name='awayGoals' />

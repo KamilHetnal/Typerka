@@ -15,9 +15,13 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Team, Team>();
-            CreateMap<Match, Match>();
-            CreateMap<Match, MatchDto>();
-            CreateMap<Bet, Bet>().ForMember(m => m.Match, m => m.MapFrom(m => m.Match));
+            CreateMap<Match, Match>()
+                .ForMember(d => d.MatchBets, d => d.MapFrom(d => d.MatchBets));
+            CreateMap<Match, MatchDto>()
+                .ForMember(d => d.MatchBets, d => d.MapFrom(d => d.MatchBets));
+            CreateMap<Bet, Bet>()
+                .ForMember(m => m.Match, m => m.MapFrom(m => m.Match))
+                .ForMember(d => d.BetDate, d => d.MapFrom(d => d.BetDate));
             CreateMap<Match, Match>().ForMember(t => t.HomeTeam, m => m.MapFrom(s => s.HomeTeam));
             CreateMap<IdentityRole, IdentityRole>();
             CreateMap<AppUser, Profiles.Profile>()

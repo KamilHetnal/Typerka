@@ -8,6 +8,7 @@ using AutoMapper;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Matches
@@ -45,6 +46,15 @@ namespace Application.Matches
                     return null;
 
                 _mapper.Map(request.Match, match);
+
+                var matchBets = await _context.Bets.Where(b => b.Match.Equals(match)).ToListAsync();
+
+                foreach (var bet in matchBets)
+                {
+                    if (match.HomeGoals.Equals(bet.HomeScore) && match.AwayGoals.Equals(bet.AwayScore))
+                        bet.BetPoints = 3;
+                    else bet.BetPoints = 0;
+                }
 
                 var result = await _context.SaveChangesAsync() > 0;
 
