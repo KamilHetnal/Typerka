@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class BetsController : BaseApiController
     {
         [HttpGet]
@@ -35,6 +35,7 @@ namespace API.Controllers
             bet.Id = id;
             return HandleResult(await Mediator.Send(new Edit.Command { Bet = bet }));
         }
+        [Authorize(Policy = "ReqAdminRole")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBet(Guid id)
         {

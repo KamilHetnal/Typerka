@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class MatchesController : BaseApiController
     {
         [HttpGet]
@@ -24,18 +24,20 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
-
+        [Authorize(Policy = "ReqAdminRole")]
         [HttpPost]
         public async Task<IActionResult> CreateMatch(Match match)
         {
             return HandleResult(await Mediator.Send(new Create.Command { Match = match }));
         }
+        [Authorize(Policy = "ReqAdminRole")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditMatch(Guid id, Match match)
         {
             match.Id = id;
             return HandleResult(await Mediator.Send(new Edit.Command { Match = match }));
         }
+        [Authorize(Policy = "ReqAdminRole")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatch(Guid id)
         {

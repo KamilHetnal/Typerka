@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class ProfilesController : BaseApiController
     {
         [HttpGet]
@@ -23,6 +23,7 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Details.Querry { UserName = username }));
         }
+        [Authorize(Policy = "ReqAdminRole")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProfile(string id)
         {

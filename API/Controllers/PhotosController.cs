@@ -1,9 +1,11 @@
 using System.Threading.Tasks;
 using Application.Photos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class PhotosController : BaseApiController
     {
         [HttpPost]

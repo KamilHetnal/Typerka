@@ -11,7 +11,7 @@ using Persistence;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class TeamsController : BaseApiController
     {
         [HttpGet]
@@ -25,7 +25,7 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
-
+        [Authorize(Policy = "ReqAdminRole")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTeam(Guid id, Team team)
         {
