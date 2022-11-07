@@ -1,4 +1,5 @@
-import { Match, MatchDto } from "./Match"
+import { MatchDto } from "./Match"
+import { Team, TeamDto } from "./Team"
 
 export interface Bet {
     id: string
@@ -7,6 +8,7 @@ export interface Bet {
     match: MatchDto
     appUserId: string
     betPoints: number
+    winner: TeamDto
   }
 
   export class Bet implements Bet {
@@ -20,7 +22,8 @@ export class BetFormValues {
     homeScore: number = 0;
     awayScore: number = 0;
     match: MatchDto | null = null;
-    appUserId?: string = undefined
+    appUserId?: string = undefined;
+    winner?: TeamDto | null = null;
 
     constructor(bet?: BetFormValues) {
         if(bet) {
@@ -29,6 +32,7 @@ export class BetFormValues {
             this.awayScore = bet.awayScore;
             this.match = bet.match;
             this.appUserId = bet.appUserId;
+            this.winner = bet.winner;
         }
     }
 }

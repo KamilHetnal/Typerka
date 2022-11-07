@@ -51,17 +51,27 @@ namespace Application.Matches
 
                 foreach (var bet in matchBets)
                 {
-                    if (match.HomeGoals.Equals(bet.HomeScore) && match.AwayGoals.Equals(bet.AwayScore))
-                        bet.BetPoints = 3;
+                    if (((match.HomeGoals > match.AwayGoals) & (bet.HomeScore > bet.AwayScore))
+                    | ((match.HomeGoals == match.AwayGoals) & (bet.HomeScore == bet.AwayScore))
+                    | ((match.HomeGoals < match.AwayGoals) & (bet.HomeScore < bet.AwayScore)))
+                    {
+                        bet.BetPoints = 2;
+                        if (match.HomeGoals.Equals(bet.HomeScore) && match.AwayGoals.Equals(bet.AwayScore))
+                        {
+                            bet.BetPoints = 5;
+                        }
+                    }
                     else bet.BetPoints = 0;
                 }
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Nie udało się edytować meczu"); 
+                if (!result) return Result<Unit>.Failure("Nie udało się edytować meczu");
 
                 return Result<Unit>.Success(Unit.Value);
             }
+
+
         }
     }
 }

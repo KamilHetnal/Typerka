@@ -623,9 +623,7 @@ namespace Persistence
                     },
                 };
 
-            context.Teams.AddRange(teams);
-
-            context.SaveChanges();
+            //await context.Teams.AddRangeAsync(teams);
 
             await context.Matches.AddRangeAsync(matches);
 

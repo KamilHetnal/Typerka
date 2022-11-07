@@ -15,9 +15,11 @@ namespace API.Services
     public class TokenService : ITokenService
     {
         private readonly SymmetricSecurityKey _key;
+        public readonly string RegisterPassword;
         public TokenService(IConfiguration config)
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            RegisterPassword = config.GetSection("RegisterPassword").Get<string>();
         }
         public string CreateToken(AppUser user, IList<string> userRoles)
         {

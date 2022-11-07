@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Services;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
@@ -49,6 +51,10 @@ namespace API.Controllers
                 return ValidationProblem();
             }
 
+            if (registerDto.RegisterPassword != _tokenService.RegisterPassword)
+            {
+                return BadRequest("Hasło rejestracyjne jest nie poprawne");
+            }
             var user = new AppUser
             {
                 DisplayName = registerDto.DisplayName,

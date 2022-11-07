@@ -25,12 +25,12 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
         [HttpPost]
-        public async Task<IActionResult> CreateBet(Bet bet)
+        public async Task<IActionResult> CreateBet([FromBody]Bet bet)
         {
             return HandleResult(await Mediator.Send(new Create.Command { Bet = bet }));
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditBet(Guid id, Bet bet)
+        public async Task<IActionResult> EditBet(Guid id,[FromBody]Bet bet)
         {
             bet.Id = id;
             return HandleResult(await Mediator.Send(new Edit.Command { Bet = bet }));
