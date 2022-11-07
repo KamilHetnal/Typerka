@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Item, Table } from 'semantic-ui-react'
 import { Match } from '../../../app/models/Match'
-import MatchAdminBar from './MatchAdminBar'
+import MatchAdminBar from './MatchButton'
 import { format } from 'date-fns'
 import { NavLink } from 'react-router-dom'
 import { useStore } from '../../../app/stores/store'
@@ -59,7 +59,10 @@ export default function MatchListitem({ match }: Props) {
                     <Table.Cell>
                         <Item.Group>
                             <Item>
-                                <Item.Image size='mini' src={`/assets/flags/${match.homeTeam?.name?.toLocaleLowerCase()}.png`} />
+                                <Item.Image 
+                                size='mini' 
+                                src={(match.homeTeam) ?`/assets/flags/${match.homeTeam?.name?.toLocaleLowerCase()}.png` : '/assets/logo.png'} 
+                                />
                                 <Item.Content verticalAlign='middle' content={match.homeTeam?.name} />
                             </Item>
                         </Item.Group>
@@ -75,7 +78,9 @@ export default function MatchListitem({ match }: Props) {
                     <Table.Cell>
                         <Item.Group>
                             <Item>
-                                <Item.Image size='mini' src={`/assets/flags/${match.awayTeam?.name?.toLocaleLowerCase()}.png`} />
+                                <Item.Image 
+                                size='mini' 
+                                src={(match.homeTeam) ? `/assets/flags/${match.awayTeam?.name?.toLocaleLowerCase()}.png` : '/assets/logo.png'} />
                                 <Item.Content verticalAlign='middle' content={match.awayTeam?.name} />
                             </Item>
                         </Item.Group>

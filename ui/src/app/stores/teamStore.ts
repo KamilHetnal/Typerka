@@ -82,8 +82,8 @@ export default class TeamStore {
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   };
+
   updateTeam =async (team:Team) => {
-    
     this.loading = true;
     try {
         await agent.Teams.update(team);

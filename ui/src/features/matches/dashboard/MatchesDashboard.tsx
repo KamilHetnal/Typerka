@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { useEffect } from 'react'
-import { NavLink } from 'react-router-dom';
-import { Button, Container } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store'
 import MatchList from './MatchList';
@@ -18,9 +17,6 @@ export default observer(function MatchesDashboard() {
 
   return (
     <Container text style={{ marginTop: '7em' }}>
-      <Button positive size='huge' floated='right' style={{ marginBottom: '1em' }} as={NavLink} to={'/createMatch'}>
-        dodaj mecz
-        </Button>
       <MatchList />
     </Container>
   )

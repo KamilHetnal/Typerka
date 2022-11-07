@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Button, Grid, Segment, Image } from 'semantic-ui-react'
 import { Profile } from '../../../app/models/Profile'

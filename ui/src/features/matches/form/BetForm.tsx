@@ -1,8 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
 import { useStore } from '../../../app/stores/store';
-import * as Yup from 'yup';
 import { v4 as uuid } from 'uuid';
 import { Formik, Form } from "formik";
 import { BetFormValues } from '../../../app/models/Bet';
@@ -24,17 +22,8 @@ export default observer(function BetForm({ matchBetId, matchId }: Props) {
   const { loadBet, createBet, updateBet } = betStore;
   const { loadMatch } = matchStore;
 
-  // useEffect(() => {
-  //   loadTeamsArray()
-  // }, [teamStore, loadTeamsArray])
-
-
   const [bet, setBet] = useState<BetFormValues>(new BetFormValues());
   const [match, setMatch] = useState<Match>(new Match());
-
-  const validationSchema = Yup.object({
-  })
-
 
   useEffect(() => {
     if (matchBetId) loadBet(matchBetId).then(bet => setBet(new BetFormValues(bet)))

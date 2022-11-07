@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
 import { Match, MatchFormValues } from '../models/Match';
@@ -15,6 +16,18 @@ export default class MatchStore {
   get matchesByDate() {
     return Array.from(this.matchRegistry.values()).sort((a,b) => 
         a.matchDate.getTime()- b.matchDate.getTime())
+  }
+
+  get groupedMatches() {
+    return Object.entries(
+      this.matchesByDate.reduce((matches, match) => {
+        const date = format(match.matchDate!, 'dd-MM');
+        matches[date] = matches[date]
+          ? [...matches[date], match]
+          : [match];
+        return matches;
+      }, {} as { [key: string]: Match[] })
+    );
   }
 
   loadMatches = async () => {

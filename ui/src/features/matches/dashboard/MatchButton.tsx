@@ -25,14 +25,12 @@ export default observer(function MatchAdminBar({match}: Props) {
             )
         }
         return (
-            <Button.Group>
                 <Button  primary onClick={() => modalStore.openModal(
                     <BetForm 
                         matchId = {match.id}
                         appUserId = {decodedUserId}
                         matchBetId={match.matchBets.find(u => {
-                        return u.appUserId == decodedUserId })?.id} />
+                        return u.appUserId === decodedUserId })?.id} />
                         )} content='Wytypuj wynik'/>
-            </Button.Group>
             )
 })

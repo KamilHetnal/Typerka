@@ -1,5 +1,5 @@
 import { MatchDto } from "./Match"
-import { Team, TeamDto } from "./Team"
+import { TeamDto } from "./Team"
 
 export interface Bet {
     id: string
