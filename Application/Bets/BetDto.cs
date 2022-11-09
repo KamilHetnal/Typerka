@@ -13,7 +13,6 @@ namespace Application.Bets
         public Guid MatchId { get; set; }
         public string AppUserId { get; set; }
         public DateTime BetDate { get; set; }
-        public Guid? WinnerId { get; set; }
         public int BetPoints { get; set; }
     }
 }

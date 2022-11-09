@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Application.ChampionBets
 {
-    public class Bet
+    public class ChampionBetDto
     {
         public Guid Id { get; set; }
-        public Match Match { get; set; }
-        public AppUser AppUser { get; set; }
-        public int HomeScore { get; set; }
-        public int AwayScore { get; set; }
+        public Guid ChampionId { get; set; }
+        public string AppUserId { get; set; }
         public DateTime BetDate { get; set; }
         public int BetPoints { get; set; }
     }

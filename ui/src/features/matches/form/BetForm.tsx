@@ -7,7 +7,7 @@ import { BetFormValues } from '../../../app/models/Bet';
 import MyNumberInput from '../../../app/common/form/MyNumberInput';
 import { Button } from 'semantic-ui-react';
 import { Match } from '../../../app/models/Match';
-import BetWinnerForm from './BetWinnerForm';
+import * as Yup from 'yup';
 
 interface Props {
   matchBetId?: string
@@ -33,8 +33,10 @@ export default observer(function BetForm({ matchBetId, matchId }: Props) {
     if (matchId) loadMatch(matchId).then(match => setMatch(new Match(match)))
   }, [matchId, loadMatch]);
 
-
-
+  const validationSchema = Yup.object({
+    homeScore: Yup.number().moreThan(-1, "Nie mozna obstawić negatywnego wyniku o_0"),
+    awayScore: Yup.number().moreThan(-1, "Nie mozna obstawić negatywnego wyniku o_0")
+  })
 
   function handleFormSubmit(bet: BetFormValues) {
 
@@ -47,36 +49,31 @@ export default observer(function BetForm({ matchBetId, matchId }: Props) {
         homeScore: bet.homeScore,
         awayScore: bet.awayScore
       };
-      createBet(newBet).then(() => {
-        if (newBet.homeScore == newBet.awayScore) {
-          modalStore.openModal(<BetWinnerForm bet={newBet} match={match} />)
-        } else {
-          modalStore.closeModal()
-        }
-      })
+      createBet(newBet).then(() => modalStore.closeModal())
     } else {
-      updateBet(bet).then(() => {
-        if (bet.homeScore == bet.awayScore) {
-          modalStore.openModal(<BetWinnerForm bet={bet} match={match} />)
-        } else {
-          modalStore.closeModal()
-        }
-      })
+      let edditedBet = {
+        ...bet,
+        match: {
+          id: match.id
+        },
+      }
+      updateBet(edditedBet).then(() => modalStore.closeModal())
     }
   }
   return (
     <div>
       <h1>Te detale...</h1>
       <Formik
+        validationSchema={validationSchema}
         enableReinitialize initialValues={bet}
         onSubmit={values => handleFormSubmit(values)}
       >
-        {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+        {({ handleSubmit, isValid, isSubmitting }) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
             <MyNumberInput placeholder='Gole Gospodarza' name='homeScore' />
             <MyNumberInput placeholder='Gole Gościa' name='awayScore' />
             <Button
-              disabled={isSubmitting || !dirty || !isValid}
+              disabled={isSubmitting || !isValid}
               loading={isSubmitting} floated='right' positive type='submit'>Dodaj</Button>
             <Button onClick={modalStore.closeModal} secondary type='button'>Anuluj</Button>
           </Form>

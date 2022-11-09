@@ -6,17 +6,28 @@ using System.Threading.Tasks;
 using Application.Core;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Players
+namespace Application.ChampionBets
 {
     public class Edit
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Player Player { get; set; }
+            public ChampionBet Bet { get; set; }
         }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Bet).SetValidator(new ChampionBetValidator());
+            }
+        }
+
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
@@ -27,19 +38,26 @@ namespace Application.Players
                 _context = context;
                 _mapper = mapper;
             }
-
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var player = await _context.Players.FindAsync(request.Player.Id);
+                var bet = await _context.ChampionBets.FindAsync(request.Bet.Id);
 
-                if (player == null)
+                var finalDate = new DateTime(2022,11,20,17,00,00);
+
+                if (bet == null)
                     return null;
 
-                _mapper.Map(request.Player, player);
+                _mapper.Map(request.Bet, bet);
+                
+
+                bet.BetDate = DateTime.Now;
+
+                if (DateTime.Now >= finalDate)
+                    return Result<Unit>.Failure("Turniej już się zaczął, nie można zmienić obstawienia");
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Nie udało się edytować zawodnika");
+                if (!result) return Result<Unit>.Failure("Nie udało się edytować obstawienia");
 
                 return Result<Unit>.Success(Unit.Value);
             }

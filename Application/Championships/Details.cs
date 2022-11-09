@@ -8,16 +8,16 @@ using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Players
+namespace Application.Championships
 {
     public class Details
     {
-        public class Query : IRequest<Result<Player>>
+        public class Query : IRequest<Result<Championship>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<Player>>
+        public class Handler : IRequestHandler<Query, Result<Championship>>
         {
             private readonly DataContext _context;
 
@@ -26,9 +26,9 @@ namespace Application.Players
                 _context = context;
             }
 
-            public async Task<Result<Player>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<Championship>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<Player>.Success(await _context.Players
+                return Result<Championship>.Success(await _context.Champions
                     .FindAsync(request.Id));
             }
         }

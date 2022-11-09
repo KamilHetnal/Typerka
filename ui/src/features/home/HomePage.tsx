@@ -23,7 +23,7 @@ export default observer(function HomePage() {
                             <UpcomingMatches />
                         </Grid.Column>
                         <Grid.Column>
-                            <Header size='medium' textAlign='center' content="Najblizsze mecze" />
+                            <Header size='medium' textAlign='center' content="Tabela wyników" />
                             <UsersTable />
                         </Grid.Column>
                     </Grid>

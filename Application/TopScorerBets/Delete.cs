@@ -4,42 +4,39 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
-using AutoMapper;
-using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Players
+namespace Application.TopScorerBets
 {
-    public class Edit
+    public class Delete
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Player Player { get; set; }
+            public Guid Id { get; set; }
         }
+
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
-            private readonly IMapper _mapper;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context)
             {
                 _context = context;
-                _mapper = mapper;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var player = await _context.Players.FindAsync(request.Player.Id);
+                var bet = await _context.TopScorerBets.FindAsync(request.Id);
 
-                if (player == null)
+                if(bet == null)
                     return null;
 
-                _mapper.Map(request.Player, player);
-
+                _context.Remove(bet);
+                
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Nie udało się edytować zawodnika");
+                if (!result) return Result<Unit>.Failure("Nie udało się usunąć tego obstawienia"); 
 
                 return Result<Unit>.Success(Unit.Value);
             }

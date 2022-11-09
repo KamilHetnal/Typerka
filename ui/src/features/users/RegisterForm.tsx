@@ -20,14 +20,14 @@ export default observer(function RegisterForm() {
                 username: Yup.string().required(),
                 email: Yup.string().required().email(),
                 password: Yup.string().required(),
-               
+                registerPassword: Yup.string().required()
             })}
         >
             {({handleSubmit, isSubmitting, errors, isValid, dirty}) => (
                 <Form className='ui form error' onSubmit={handleSubmit} autoComplete='off'>
-                    <Header as='h2' content='Rejestracja' color='teal' textAlign='center' />
+                    <Header as='h2' content='Rejestracja' color='teal' textAlign='center'/>
                     <MyTextInput name='displayName' placeholder='Login'/>
-                    <MyTextInput name='username' placeholder='Imie'/>
+                    <MyTextInput name='username' placeholder='Imię'/>
                     <MyTextInput name='email' placeholder='Email'/>
                     <MyTextInput name='password' placeholder='Hasło' type='password'/>
                     <MyTextInput name='registerPassword' placeholder='Hasło Rejestracyjne' type='password'/>

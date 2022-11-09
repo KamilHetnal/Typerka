@@ -6,28 +6,18 @@ using System.Threading.Tasks;
 using Application.Core;
 using AutoMapper;
 using Domain;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Bets
+namespace Application.Championships
 {
     public class Edit
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Bet Bet { get; set; }
+            public Championship Championship { get; set; }
         }
-
-        public class CommandValidator : AbstractValidator<Command>
-        {
-            public CommandValidator()
-            {
-                RuleFor(x => x.Bet).SetValidator(new BetValidator());
-            }
-        }
-
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
@@ -38,26 +28,36 @@ namespace Application.Bets
                 _context = context;
                 _mapper = mapper;
             }
+
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var bet = await _context.Bets.FindAsync(request.Bet.Id);
+                var championship = await _context.Champions.FindAsync(request.Championship.Id);
 
-                if (bet == null)
+                var championBets = await _context.ChampionBets.ToListAsync();
+
+                var topScorerBets = await _context.TopScorerBets.ToListAsync();
+
+                if (championship == null)
                     return null;
 
-                _mapper.Map(request.Bet, bet);
-                
-                var match = await _context.Matches.FindAsync(bet.Match.Id);
+                _mapper.Map(request.Championship, championship);
 
-                bet.BetDate = DateTime.Now;
-                bet.Match = match;
+                foreach(var champ in championBets)
+                {
+                    if (champ.ChampionId == championship.WinnerId)
+                        champ.Points = 10;
+                }
 
-                if (DateTime.Now >= match.MatchDate)
-                    return Result<Unit>.Failure("Mecz już się zaczął, nie można zmienić obstawienia");
+                foreach (var king in topScorerBets)
+                    if (king.TopScorerId == championship.TopScorerId)
+                        king.Points = 10;
+                {
+                    
+                }
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Nie udało się edytować obstawienia");
+                if (!result) return Result<Unit>.Failure("Nie udało się edytować mistrzostw");
 
                 return Result<Unit>.Success(Unit.Value);
             }

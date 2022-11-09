@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Bet
+    public class ChampionBet
     {
         public Guid Id { get; set; }
-        public Match Match { get; set; }
         public AppUser AppUser { get; set; }
-        public int HomeScore { get; set; }
-        public int AwayScore { get; set; }
+        public Guid ChampionId { get; set; }
+        public Team Champion { get; set; }
         public DateTime BetDate { get; set; }
-        public int BetPoints { get; set; }
+        public int Points { get; set; }
     }
 }

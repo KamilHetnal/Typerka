@@ -11,13 +11,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Bets
+namespace Application.TopScorerBets
 {
     public class Create
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Bet Bet { get; set; }
+            public TopScorerBet Bet { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -35,24 +35,28 @@ namespace Application.Bets
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
 
-                var match = await _context.Matches.FirstOrDefaultAsync(x => x.Id == request.Bet.Match.Id);
+                if(user.ChampionBetId != null)
+                    return Result<Unit>.Failure("Użytkownik ma stworzone obstawienie mistrza świata, zmień go zamiast dodawać nowy");
+                
+                var player = await _context.Players.FirstOrDefaultAsync(x => x.Id == request.Bet.TopScorerId);
 
-                var bet= new Bet
+                var finalDate = new DateTime(2022,11,20,17,00,00);
+
+                var bet= new TopScorerBet
                 {
                     AppUser = user,
-                    Match = request.Bet.Match,
-                    HomeScore = request.Bet.HomeScore,
-                    AwayScore = request.Bet.AwayScore,
+                    TopScorerId = request.Bet.TopScorerId,
+                    TopScorer = player,
                     BetDate = DateTime.Now
                 };
 
                 request.Bet = bet;
 
-                if(DateTime.Now >= match.MatchDate)
-                    return Result<Unit>.Failure("Mecz już się zaczął, nie można dodać obstawienia");
+                if(DateTime.Now >= finalDate)
+                    return Result<Unit>.Failure("Turniej już się zaczął, nie można dodać obstawienia");
 
-                match.MatchBets.Add(bet);
-                user.Bets.Append(bet);
+                _context.TopScorerBets.Add(bet);
+                user.TopScorerBetId = bet.Id;
 
                 var result = await _context.SaveChangesAsync() > 0;
 

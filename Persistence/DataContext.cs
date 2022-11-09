@@ -14,11 +14,13 @@ namespace Persistence
         {
 
         }
+        public DbSet<Championship> Champions { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Bet> Bets { get; set; }
-
+        public DbSet<ChampionBet> ChampionBets { get; set; }
+        public DbSet<TopScorerBet> TopScorerBets { get; set; }
     }
 }

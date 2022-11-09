@@ -24,6 +24,9 @@ namespace Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid?>("ChampionBetId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -64,6 +67,9 @@ namespace Persistence.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("TopScorerBetId")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
@@ -73,12 +79,18 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChampionBetId")
+                        .IsUnique();
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("TopScorerBetId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -107,18 +119,62 @@ namespace Persistence.Migrations
                     b.Property<Guid?>("MatchId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("WinnerId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("MatchId");
 
+                    b.ToTable("Bets");
+                });
+
+            modelBuilder.Entity("Domain.ChampionBet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("BetDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ChampionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChampionId");
+
+                    b.ToTable("ChampionBets");
+                });
+
+            modelBuilder.Entity("Domain.Champions", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TopScorerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("WinnerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopScorerId");
+
                     b.HasIndex("WinnerId");
 
-                    b.ToTable("Bets");
+                    b.ToTable("Champions");
                 });
 
             modelBuilder.Entity("Domain.Match", b =>
@@ -233,6 +289,28 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("Domain.TopScorerBet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("BetDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("TopScorerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopScorerId");
+
+                    b.ToTable("TopScorerBets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -363,6 +441,17 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Domain.AppUser", b =>
+                {
+                    b.HasOne("Domain.ChampionBet", null)
+                        .WithOne("AppUser")
+                        .HasForeignKey("Domain.AppUser", "ChampionBetId");
+
+                    b.HasOne("Domain.TopScorerBet", null)
+                        .WithOne("AppUser")
+                        .HasForeignKey("Domain.AppUser", "TopScorerBetId");
+                });
+
             modelBuilder.Entity("Domain.Bet", b =>
                 {
                     b.HasOne("Domain.AppUser", "AppUser")
@@ -373,13 +462,37 @@ namespace Persistence.Migrations
                         .WithMany("MatchBets")
                         .HasForeignKey("MatchId");
 
-                    b.HasOne("Domain.Team", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId");
-
                     b.Navigation("AppUser");
 
                     b.Navigation("Match");
+                });
+
+            modelBuilder.Entity("Domain.ChampionBet", b =>
+                {
+                    b.HasOne("Domain.Team", "Champion")
+                        .WithMany()
+                        .HasForeignKey("ChampionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Champion");
+                });
+
+            modelBuilder.Entity("Domain.Champions", b =>
+                {
+                    b.HasOne("Domain.Player", "TopScorer")
+                        .WithMany()
+                        .HasForeignKey("TopScorerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Team", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TopScorer");
 
                     b.Navigation("Winner");
                 });
@@ -415,6 +528,17 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("Domain.TopScorerBet", b =>
+                {
+                    b.HasOne("Domain.Player", "TopScorer")
+                        .WithMany()
+                        .HasForeignKey("TopScorerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TopScorer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -475,6 +599,11 @@ namespace Persistence.Migrations
                     b.Navigation("Photos");
                 });
 
+            modelBuilder.Entity("Domain.ChampionBet", b =>
+                {
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("Domain.Match", b =>
                 {
                     b.Navigation("MatchBets");
@@ -483,6 +612,11 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Team", b =>
                 {
                     b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("Domain.TopScorerBet", b =>
+                {
+                    b.Navigation("AppUser");
                 });
 #pragma warning restore 612, 618
         }

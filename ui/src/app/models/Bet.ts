@@ -8,7 +8,6 @@ export interface Bet {
     match: MatchDto
     appUserId: string
     betPoints: number
-    winner: TeamDto
   }
 
   export class Bet implements Bet {
@@ -23,7 +22,6 @@ export class BetFormValues {
     awayScore: number = 0;
     match: MatchDto | null = null;
     appUserId?: string = undefined;
-    winner?: TeamDto | null = null;
 
     constructor(bet?: BetFormValues) {
         if(bet) {
@@ -32,7 +30,6 @@ export class BetFormValues {
             this.awayScore = bet.awayScore;
             this.match = bet.match;
             this.appUserId = bet.appUserId;
-            this.winner = bet.winner;
         }
     }
 }
