@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
-import { Player } from '../models/Player';
+import { Player, PlayerFormValues } from '../models/Player';
 
 export default class PlayerStore {
   players: Player[] = [];
@@ -79,13 +79,20 @@ export default class PlayerStore {
     }
   };
 
-  updatePlayer = async (player: Player) => {
+  updatePlayer = async (player: PlayerFormValues) => {
     this.setLoadingInitial(true);
     try {
       await agent.Players.update(player);
       runInAction(() => {
-        this.playerRegistry.set(player.id, player);
-        this.setLoadingInitial(false);
+        if (player.id) {
+          let updatedPlayer = {
+            ...this.getPlayer(player.id),
+            ...player,
+          };
+          this.playerRegistry.set(player.id, updatedPlayer as Player);
+          this.player = updatedPlayer as Player;
+          this.setLoadingInitial(false);
+        }
       });
     } catch (error) {
       console.log(error);

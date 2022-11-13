@@ -19,6 +19,7 @@ export default observer(function NavBar() {
                 <Menu.Item as={NavLink} to='/matches' name="Typy" />
                 <Menu.Item as={NavLink} to='/teams' name="Grupy" />
                 <Menu.Item as={NavLink} to='/ladder' name="Drabinka" />
+                <Menu.Item as={NavLink} to='/statute' name="Regulamin" />
                 {isLoggedin ? (
                     <>
                         <AdminList />

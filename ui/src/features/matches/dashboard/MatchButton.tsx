@@ -10,7 +10,7 @@ interface Props {
     match: Match
 }
 
-export default observer(function MatchAdminBar({match}: Props) {
+export default observer(function MatchButton({match}: Props) {
     const { userStore: { getRoles, getLoggedUser },modalStore, matchStore: {deleteMatch} } = useStore();
 
     const decodedRole = getRoles();
@@ -28,9 +28,9 @@ export default observer(function MatchAdminBar({match}: Props) {
                 <Button  primary onClick={() => modalStore.openModal(
                     <BetForm 
                         matchId = {match.id}
-                        appUserId = {decodedUserId}
                         matchBetId={match.matchBets.find(u => {
                         return u.appUserId === decodedUserId })?.id} />
-                        )} content='Wytypuj wynik'/>
+                        )} content='Wytypuj wynik'
+                        />
             )
 })

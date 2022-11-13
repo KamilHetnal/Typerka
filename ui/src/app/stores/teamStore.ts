@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
-import { Team } from '../models/Team';
+import { Team, TeamFormValues } from '../models/Team';
 
 export default class TeamStore {
   teams: Team[] = [];
@@ -29,13 +29,16 @@ export default class TeamStore {
   }
 
   loadTeamsArray = async () => {
+    this.setLoadingInitial(true);
     try {
       const teams = await agent.Teams.list();
       teams.forEach(team => {
         this.teams.push(team)
+        this.setLoadingInitial(false);
       })
     } catch (error) {
       console.log(error)
+      this.setLoadingInitial(false);
     }
   }
 
@@ -57,12 +60,15 @@ export default class TeamStore {
     let team = this.getTeam(id);
     if (team) {
       this.team = team;
+      return team;
     } else {
       this.setLoadingInitial(true)
       try {
-        team = await agent.Teams.details(id);
-        this.setTeam(team);
-        runInAction(() => {this.team = team; })
+        const team = await agent.Teams.details(id);
+        runInAction(() => {
+          this.team = team; 
+          this.setTeam(team);
+        })
         this.setLoadingInitial(false);
       } catch (error) {
         console.log(error)
@@ -83,14 +89,19 @@ export default class TeamStore {
     this.loadingInitial = state;
   };
 
-  updateTeam =async (team:Team) => {
-    this.loading = true;
+  updateTeam =async (team:TeamFormValues) => {
     try {
-        await agent.Teams.update(team);
-        runInAction(() => {
-            this.teamRegistry.set(team.id, team);
-            this.loading = false;
-        })
+      await agent.Teams.update(team);
+      runInAction(() => {
+        if (team.id) {
+          let updatedTeam = {
+            ...this.getTeam(team.id),
+            ...team,
+          };
+          this.teamRegistry.set(team.id, updatedTeam as Team);
+          this.team = updatedTeam as Team;
+        }
+      });
     }catch (error) {
         console.log(error);
         runInAction(() => {

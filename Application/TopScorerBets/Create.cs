@@ -35,7 +35,7 @@ namespace Application.TopScorerBets
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
 
-                if(user.ChampionBetId != null)
+                if(user.TopScorerBetId != null)
                     return Result<Unit>.Failure("Użytkownik ma stworzone obstawienie mistrza świata, zmień go zamiast dodawać nowy");
                 
                 var player = await _context.Players.FirstOrDefaultAsync(x => x.Id == request.Bet.TopScorerId);

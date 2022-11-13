@@ -12,10 +12,20 @@ export default class ChampionBetStore {
     constructor() {
         makeAutoObservable(this);
       }
-    //   get championBetsByDate() {
-    //     return Array.from(this.championBetRegistry.values()).sort((a,b) => 
-    //         a.championBetDate.getTime()- b.championBetDate.getTime())
-    //   }
+      get betsInGroups() {
+        return Array.from(this.championBetRegistry.values()).sort((a, b) => a.championId?.localeCompare(b.championId))
+      }
+    
+      get groupedBets() {
+        return Object.entries(
+          this.betsInGroups.reduce((bets, bet) => {
+            bets[bet.championId] = bets[bet.championId]
+              ? [...bets[bet.championId], bet]
+              : [bet]
+              return bets
+          }, {} as { [key: string]: ChampionBet[]})
+        );
+      }
     
       loadChampionBets = async () => {
         this.setLoadingInitial(true);

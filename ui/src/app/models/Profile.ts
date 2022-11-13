@@ -1,3 +1,6 @@
+import { Bet } from "./Bet";
+import { ChampionBet } from "./ChampionBet";
+import { TopScorerBet } from "./TopScorerBet";
 import { User } from "./User";
 
 export interface Profile {
@@ -8,6 +11,9 @@ export interface Profile {
     image?: string;
     bio?: string;
     points: number;
+    bets: Bet[];
+    championBet: ChampionBet;
+    topScorerBet: TopScorerBet;
     photos: Photo[];
     roles: string[];
 }

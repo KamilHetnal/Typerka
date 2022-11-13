@@ -49,12 +49,14 @@ namespace Application.Championships
                 {
                     if (champ.ChampionId == championship.WinnerId)
                         champ.Points = 10;
+                    else champ.Points = 0;
                 }
 
                 foreach (var king in topScorerBets)
                 {
                     if (king.TopScorerId == championship.TopScorerId)
-                        king.Points = 10;   
+                        king.Points = 10; 
+                     else king.Points = 0;  
                 }
 
                 var result = await _context.SaveChangesAsync() > 0;

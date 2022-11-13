@@ -12,7 +12,6 @@ import * as Yup from 'yup';
 interface Props {
   matchBetId?: string
   matchId: string
-  appUserId?: string
 }
 
 export default observer(function BetForm({ matchBetId, matchId }: Props) {

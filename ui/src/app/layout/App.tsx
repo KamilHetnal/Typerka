@@ -19,6 +19,9 @@ import ProfilePage from '../../features/profiles/ProfilePage';
 import LoadingComponent from './LoadingComponent';
 import { observer } from 'mobx-react-lite';
 import LadderDashboard from '../../features/matches/dashboard/LadderDashboard';
+import StatutePage from '../../features/statute/StatutePage';
+import TopScorerBetsDashboard from '../../features/championships/dashboard/TopScorerBetsDashboard';
+import ChampionBetsDashboard from '../../features/championships/dashboard/ChampionBetsDashboard';
 
 function App() {
   const location = useLocation();
@@ -49,7 +52,11 @@ function App() {
           <Route exact path={'/matches'} component={MatchesDashboard} />
           <Route exact path='/matches/:id' component={MatchDetails} />
           <Route key={location.key} path={['/createMatch', '/manage_match/:id']} component={MatchForm} />
+          
+          <Route exact path={'/top-scorer-bets'} component={TopScorerBetsDashboard} />
+          <Route exact path={'/champion-bets'} component={ChampionBetsDashboard} />
 
+          <Route exact path={'/statute'} component={StatutePage} />
           <Route exact path={'/login'} component={LoginForm} />
           <Route exact path={'/users'} component={ProfileDashboard} />
           <Route path={'/teams/:id'} component={TeamDetails} />

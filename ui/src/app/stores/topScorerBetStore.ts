@@ -12,10 +12,20 @@ export default class TopScorerBetStore {
   constructor() {
     makeAutoObservable(this);
   }
-//   get topScorerBetsByDate() {
-//     return Array.from(this.topScorerBetRegistry.values()).sort((a,b) => 
-//         a.topScorerBetDate.getTime()- b.topScorerBetDate.getTime())
-//   }
+  get betsInGroups() {
+    return Array.from(this.topScorerBetRegistry.values()).sort((a, b) => a.topScorerId?.localeCompare(b.topScorerId))
+  }
+
+  get groupedBets() {
+    return Object.entries(
+      this.betsInGroups.reduce((bets, bet) => {
+        bets[bet.topScorerId] = bets[bet.topScorerId]
+          ? [...bets[bet.topScorerId], bet]
+          : [bet]
+          return bets
+      }, {} as { [key: string]: TopScorerBet[]})
+    );
+  }
 
   loadTopScorerBets = async () => {
     this.setLoadingInitial(true);

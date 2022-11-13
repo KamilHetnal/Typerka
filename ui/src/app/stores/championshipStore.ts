@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
-import { Championship } from '../models/Championship';
+import { Championship, ChampionshipFormValue } from '../models/Championship';
 
 export default class ChampionshipStore {
   championships: Championship[] = [];
@@ -11,6 +11,11 @@ export default class ChampionshipStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get championshipsByCountry() {
+    return Array.from(this.championshipRegistry.values()).sort((a,b) => 
+        a.country.localeCompare(b.country))
   }
 
   loadChampionships = async () => {
@@ -49,14 +54,19 @@ export default class ChampionshipStore {
     }
   };
 
-  updateChampionship = async (championship: Championship) => {
+  updateChampionship = async (championship: ChampionshipFormValue) => {
     this.setLoadingInitial(true);
     try {
       await agent.Championships.update(championship);
       runInAction(() => {
-        this.championshipRegistry.set(championship.id, championship);
-        this.setLoadingInitial(false);
-      });
+        if (championship.id) {
+          let updatedChampionship = {
+            ...this.getChampionship(championship.id),
+            ...championship,
+          };
+          this.championshipRegistry.set(championship.id, updatedChampionship as Championship);
+          this.championship = updatedChampionship as Championship;
+        }})
     } catch (error) {
       console.log(error);
       runInAction(() => {

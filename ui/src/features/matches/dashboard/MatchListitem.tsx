@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, Item, } from 'semantic-ui-react'
 import { Match } from '../../../app/models/Match'
-import MatchAdminBar from './MatchButton'
 import { format } from 'date-fns'
 import { NavLink } from 'react-router-dom'
 import { useStore } from '../../../app/stores/store'
 import { Bet } from '../../../app/models/Bet'
 import TeamNavName from '../../teams/details/TeamNavName'
+import MatchButton from './MatchButton'
 
 interface Props {
     match: Match
@@ -14,6 +14,10 @@ interface Props {
 
 export default function MatchListitem({ match }: Props) {
     const { betStore, userStore } = useStore();
+
+    const itemStyle = {
+        borderTop: '0.2em solid #2185d0'
+    }
 
     const { loadBet } = betStore;
     const { getLoggedUser } = userStore;
@@ -29,21 +33,21 @@ export default function MatchListitem({ match }: Props) {
     }, [matchBetId, loadBet])
 
     return (
-        <Grid columns={2}>
-            <Grid.Row >
+        <Grid columns={2} style={itemStyle} divided>
+            <Grid.Row>
                 <Grid.Column width={8}>
                     <Item as={NavLink} to={`/matches/${match.id}`}>
                         {format(match.matchDate, 'dd-MM: H:mm')}
                     </Item>
                 </Grid.Column>
                 <Grid.Column width={8}>
-                    <MatchAdminBar match={match} />
+                    <MatchButton match={match} />
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row>
+            <Grid.Row >
                 <Grid.Column width={8}>
                     <Item>
-                        <p>punkty: {matchBet.betPoints}</p>
+                        <p>punkty: {matchBet.betPoints | 0}</p>
                     </Item>
                 </Grid.Column>
                 <Grid.Column width={4}>

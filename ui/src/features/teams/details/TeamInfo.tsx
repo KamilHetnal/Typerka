@@ -1,20 +1,20 @@
 import React from 'react'
-import { Item } from 'semantic-ui-react'
+import { Grid, Header, Image } from 'semantic-ui-react'
 import { Team } from '../../../app/models/Team'
 
 interface Props {
     team: Team
 }
 
-export default function TeamInfo({team}: Props) {
+export default function TeamInfo({ team }: Props) {
     return (
-        <Item.Group>
-            <Item>
-                <Item.Image size='small' src={`/assets/flags/${team.name.toLocaleLowerCase()}.png`} />
-                <Item.Content verticalAlign='middle'>
-                    <Item.Header content={team.name} />
-                </Item.Content>
-            </Item>
-        </Item.Group>
+        <Grid columns={2}>
+            <Grid.Column width={4}>
+                <Image size='small' src={`/assets/flags/${team.name.toLocaleLowerCase()}.png`} />
+            </Grid.Column>
+            <Grid.Column width={12} verticalAlign='middle'>
+                <Header size='medium' content={team.name} />
+            </Grid.Column>
+        </Grid>
     )
 }
