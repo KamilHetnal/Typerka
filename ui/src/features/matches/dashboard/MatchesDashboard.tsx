@@ -7,11 +7,11 @@ import MatchList from './MatchList';
 
 export default observer(function MatchesDashboard() {
   const {matchStore} = useStore();
-  const {loadMatches, matchRegistry, loadingInitial} = matchStore;
+  const {loadMatches, loadingInitial} = matchStore;
 
   useEffect(() => {
-    if (matchRegistry.size <= 0) loadMatches()
-  }, [matchRegistry.size, loadMatches])
+      loadMatches()
+  }, [loadMatches])
 
   if (loadingInitial) return <LoadingComponent content='Zbieram dane' />
 

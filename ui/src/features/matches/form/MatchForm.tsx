@@ -6,7 +6,7 @@ import { useStore } from '../../../app/stores/store';
 import * as Yup from 'yup';
 import { v4 as uuid } from 'uuid';
 import { Formik, Form } from "formik";
-import { Button} from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import MyDateInput from '../../../app/common/form/MyDateInput';
 import MySelectInput from '../../../app/common/form/MySelectInput';
 import MyNumberInput from '../../../app/common/form/MyNumberInput';
@@ -19,11 +19,12 @@ interface Props {
 export default observer(function MatchForm({ id }: Props) {
   const history = useHistory();
 
-  const { matchStore,teamStore } = useStore();
+  const { matchStore, teamStore, modalStore } = useStore();
 
   const { loadMatch, createMatch, updateMatch } = matchStore;
-  const { loadTeamsArray, teams} = teamStore;
-  
+  const { loadTeamsArray, teams } = teamStore;
+  const { closeModal } = modalStore;
+
   useEffect(() => {
     loadTeamsArray()
   }, [teamStore, loadTeamsArray])
@@ -45,9 +46,9 @@ export default observer(function MatchForm({ id }: Props) {
         ...match,
         id: uuid(),
       };
-      createMatch(newMatch).then(() => history.push(`/matches/${newMatch.id}`))
+      createMatch(newMatch).then(() => closeModal()).then(() => history.push(`/matches/${newMatch.id}`))
     } else {
-      updateMatch(match).then(() => history.push(`/matches/${match.id}`))
+      updateMatch(match).then(() => closeModal()).then(() => history.push(`/matches/${match.id}`))
     }
   }
   return (
@@ -60,32 +61,34 @@ export default observer(function MatchForm({ id }: Props) {
       >
         {({ handleSubmit, isValid, isSubmitting, dirty }) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-            <MyDateInput 
-                placeholderText='Data meczu'
-                name='matchDate'
-                showTimeSelect
-                timeFormat='p'
-                timeCaption='Początek'
-                dateFormat='dd-MM-yyyy H:mm'
+            <MyDateInput
+              placeholderText='Data meczu'
+              name='matchDate'
+              showTimeSelect
+              timeFormat='p'
+              timeCaption='Początek'
+              dateFormat='dd-MM-yyyy H:mm'
             />
             <MyNumberInput placeholder='Gole Gospodarza' name='homeGoals' />
             <MyNumberInput placeholder='Gole Gościa' name='awayGoals' />
-            <MySelectInput 
-              placeholder="Gospodarz" 
+            <MySelectInput
+              placeholder="Gospodarz"
               name='homeTeam'
-              options={teams.map(t => ({  
+              options={teams.map(t => ({
                 "key": `h${t.id}`,
                 "text": t.name,
-                "value": t}
+                "value": t
+              }
               ))}
             />
-            <MySelectInput 
-              placeholder="Gość" 
+            <MySelectInput
+              placeholder="Gość"
               name='awayTeam'
-              options={teams.map(t => ({  
+              options={teams.map(t => ({
                 "key": `a${t.id}`,
                 "text": t.name,
-                "value": t}
+                "value": t
+              }
               ))}
             />
             <Button

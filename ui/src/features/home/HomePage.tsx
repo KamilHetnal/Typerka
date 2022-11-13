@@ -17,16 +17,13 @@ export default observer(function HomePage() {
                 <>
                     <Header size='huge' textAlign='center' content="Bo pierwszy milion trzeba wygrać" />
                     <Rules />
-                    <Grid columns={2} divided style={{ marginTop: '2em' }}>
-                        <Grid.Column>
-                            <Header size='medium' textAlign='center' content="Najblizsze mecze" />
-                            <UpcomingMatches />
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Header size='medium' textAlign='center' content="Tabela wyników" />
-                            <UsersTable />
-                        </Grid.Column>
-                    </Grid>
+
+                    <Header size='medium' textAlign='center' content="Tabela wyników" />
+                    <UsersTable />
+
+                    <Header size='medium' textAlign='center' content="Najblizsze mecze" />
+                    <UpcomingMatches />
+
                 </>
             ) : (
                 <Segment textAlign="center" vertical>

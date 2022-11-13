@@ -21,8 +21,8 @@ export default class TeamStore {
     return Object.entries(
       this.teamsInGroups.reduce((teams, team) => {
         teams[team.group] = teams[team.group]
-          ? [...teams[team.group], team].sort((a,b) => a.points - b.points)
-          : [team].sort((a,b) => a.points - b.points)
+          ? [...teams[team.group], team].sort((b,a) => a.points - b.points).sort((b,a) => (a.goalsScored - a.goalsConceded) - (b.goalsScored - b.goalsConceded))
+          : [team].sort((b,a) => a.points - b.points).sort((a,b) => (a.goalsScored - a.goalsConceded) - (b.goalsScored - b.goalsConceded))
           return teams
       }, {} as { [key: string]: Team[]})
     );

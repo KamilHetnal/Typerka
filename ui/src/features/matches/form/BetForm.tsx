@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { Formik, Form } from "formik";
 import { BetFormValues } from '../../../app/models/Bet';
 import MyNumberInput from '../../../app/common/form/MyNumberInput';
-import { Button } from 'semantic-ui-react';
+import { Button, Label } from 'semantic-ui-react';
 import { Match } from '../../../app/models/Match';
 import * as Yup from 'yup';
 
@@ -70,7 +70,9 @@ export default observer(function BetForm({ matchBetId, matchId }: Props) {
       >
         {({ handleSubmit, isValid, isSubmitting }) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
+            <Label content={match.homeTeam?.name} color='violet' basic style={{width: '100%'}}/>
             <MyNumberInput placeholder='Gole Gospodarza' name='homeScore' />
+            <Label content={match.awayTeam?.name} color='blue' basic style={{width: '100%'}}/>
             <MyNumberInput placeholder='Gole Gościa' name='awayScore' />
             <Button
               disabled={isSubmitting || !isValid}

@@ -1,29 +1,90 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Item, Table } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import { Team } from '../../../app/models/Team'
+import TeamNavName from '../details/TeamNavName'
 
 interface Props {
     team: Team
+    index: number
 }
 
-export default function TeamListItem({ team }: Props) {
+export default function TeamListItem({ team, index }: Props) {
     return (
-        <Table.Row textAlign='center'>
-            <Table.Cell  >
-                <Item.Group as={Link} to={`/teams/${team.id}`}>
-                    <Item>
-                        <Item.Image size='mini' src={`/assets/flags/${team.name?.toLocaleLowerCase()}.png`} />
-                        <Item.Content verticalAlign='middle' content={team.name} />
-                    </Item>
-                </Item.Group>
-            </Table.Cell>
-            <Table.Cell>{team.matchesPlayed}</Table.Cell>
-            <Table.Cell>{team.wins}</Table.Cell>
-            <Table.Cell>{team.losses}</Table.Cell>
-            <Table.Cell>{team.draws}</Table.Cell>
-            <Table.Cell>{team.goalsScored} : {team.goalsConceded}</Table.Cell>
-            <Table.Cell>{team.points}</Table.Cell>
-        </Table.Row>
+        <>
+            {(index > 2) ?
+                <>
+                    <Grid.Row
+                        only='computer'
+                        textAlign='center'
+                        style={{
+                            backgroundColor: 'white',
+                            borderBottomRightRadius: 20,
+                            borderBottomLeftRadius: 20
+                        }} >
+                        <ComputerItem team={team} index={index} />
+                    </Grid.Row>
+                    <Grid.Row
+                        only='mobile tablet'
+                        textAlign='center'
+                        style={{
+                            backgroundColor: 'white',
+                            borderBottomRightRadius: 20,
+                            borderBottomLeftRadius: 20
+                        }} >
+                        <MobileItem team={team} index={index} />
+                    </Grid.Row>
+                </>
+                :
+                <>
+                    <Grid.Row
+                        only='computer'
+                        textAlign='center'
+                        style={{
+                            backgroundColor: 'white'
+                        }}
+                    >
+                        <ComputerItem team={team} index={index} />
+                    </Grid.Row>
+                    <Grid.Row
+                        only='mobile tablet'
+                        textAlign='center'
+                        style={{
+                            backgroundColor: 'white'
+                        }}
+                    >
+                        <MobileItem team={team} index={index} />
+                    </Grid.Row>
+                </>
+            }
+        </>
+    )
+}
+export function ComputerItem({ team, index }: Props) {
+    return (
+        <>
+            <Grid.Column width={1} >
+                {index + 1}.
+            </Grid.Column>
+            <Grid.Column width={4}>
+                <TeamNavName team={team} />
+            </Grid.Column>
+            <Grid.Column width={2} >{team.matchesPlayed}</Grid.Column>
+            <Grid.Column width={2} >{team.wins}</Grid.Column>
+            <Grid.Column width={2} >{team.losses}</Grid.Column>
+            <Grid.Column width={2} >{team.draws}</Grid.Column>
+            <Grid.Column width={2}>{team.goalsScored} : {team.goalsConceded}</Grid.Column>
+            <Grid.Column width={1}>{team.points}</Grid.Column>
+        </>
+    )
+}
+export function MobileItem({ team }: Props) {
+    return (
+        <>
+            <Grid.Column width={8}>
+                <TeamNavName team={team} />
+            </Grid.Column>
+            <Grid.Column width={4}>{team.goalsScored} : {team.goalsConceded}</Grid.Column>
+            <Grid.Column width={4}>{team.points}</Grid.Column>
+        </>
     )
 }

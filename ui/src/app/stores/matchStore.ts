@@ -4,7 +4,6 @@ import agent from '../api/agent';
 import { Match, MatchFormValues } from '../models/Match';
 
 export default class MatchStore {
-  matches: Match[] = [];
   matchRegistry = new Map<string, Match>();
   match: Match | undefined = undefined;
   loading = false;
@@ -35,7 +34,21 @@ export default class MatchStore {
     try {
       const matches = await agent.Matches.list();
       matches.forEach((match) => {
-        this.setMatch(match)
+        runInAction(() => this.setMatch(match))
+      });
+      this.setLoadingInitial(false);
+    } catch (error) {
+      console.log(error);
+      this.setLoadingInitial(false);
+    }
+  };
+
+  loadMatchesForTeam = async (id: string) => {
+    this.setLoadingInitial(true);
+    try {
+      const matches = await agent.Matches.listForTeam(id);
+      matches.forEach((match) => {
+        runInAction(() => this.setMatch(match))
       });
       this.setLoadingInitial(false);
     } catch (error) {

@@ -9,6 +9,10 @@ import { Photo, Profile } from '../models/Profile';
 import { Role, RoleFormValues } from '../models/Role';
 import { UserRole } from '../models/UserRole';
 import { Bet, BetFormValues } from '../models/Bet';
+import { Player } from '../models/Player';
+import { Championship } from '../models/Championship';
+import { TopScorerBet, TopScorerBetFormValues } from '../models/TopScorerBet';
+import { ChampionBet, ChampionBetFormValues } from '../models/ChampionBet';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -83,14 +87,28 @@ const Account = {
     requests.post<User>('/account/register', user),
 };
 
+const Championships = {
+  list: () => requests.get<Championship[]>('championships'),
+  details: (id: string) => requests.get<Championship>(`championships/${id}`),
+  update: (championship: Championship) => requests.put<void>(`championships/${championship.id}`, championship),
+};
+
 const Teams = {
   list: () => requests.get<Team[]>('teams'),
   details: (id: string) => requests.get<Team>(`teams/${id}`),
   update: (team: Team) => requests.put<void>(`teams/${team.id}`, team),
 };
 
+const Players = {
+  list: () => requests.get<Player[]>('players'),
+  listInTeam: (id: string) => requests.get<Player[]>(`players/team/${id}`),
+  details: (id: string) => requests.get<Player>(`players/${id}`),
+  update: (player: Player) => requests.put<void>(`players/${player.id}`, player),
+};
+
 const Matches = {
   list: () => requests.get<Match[]>('matches'),
+  listForTeam: (id: string) => requests.get<Match[]>(`matches/team/${id}`),
   details: (id: string) => requests.get<Match>(`matches/${id}`),
   create: (match: MatchFormValues) => requests.post<void>(`/matches/`, match),
   update: (match: MatchFormValues) => requests.put<void>(`matches/${match.id}`, match),
@@ -100,9 +118,25 @@ const Matches = {
 const Bets = {
   list: () => requests.get<Bet[]>('bets'),
   details: (id: string) => requests.get<Bet>(`bets/${id}`),
-  create: (bet: BetFormValues) => requests.post<void>(`/bets/`, bet),
+  create: (bet: BetFormValues) => requests.post<void>(`bets/`, bet),
   update: (bet: BetFormValues) => requests.put<void>(`bets/${bet.id}`, bet),
-  delete: (id: string) => requests.del<void>(`/bets/${id}`),
+  delete: (id: string) => requests.del<void>(`bets/${id}`),
+};
+
+const TopScorerBets = {
+  list: () => requests.get<TopScorerBet[]>('top-scorer-bets'),
+  details: (id: string) => requests.get<TopScorerBet>(`top-scorer-bets/${id}`),
+  create: (bet: TopScorerBetFormValues) => requests.post<void>(`top-scorer-bets/`, bet),
+  update: (bet: TopScorerBetFormValues) => requests.put<void>(`top-scorer-bets/${bet.id}`, bet),
+  delete: (id: string) => requests.del<void>(`top-scorer-bets/${id}`),
+};
+
+const ChampionBets = {
+  list: () => requests.get<ChampionBet[]>('bets'),
+  details: (id: string) => requests.get<ChampionBet>(`bets/${id}`),
+  create: (bet: ChampionBetFormValues) => requests.post<void>(`bets/`, bet),
+  update: (bet: ChampionBetFormValues) => requests.put<void>(`bets/${bet.id}`, bet),
+  delete: (id: string) => requests.del<void>(`bets/${id}`),
 };
 
 const Profiles = {
@@ -141,10 +175,14 @@ const Roles = {
 
 const agent = {
   Account,
+  Championships,
   Teams,
+  Players,
   Matches,
-  Profiles,
   Bets,
+  ChampionBets,
+  TopScorerBets,
+  Profiles,
   Roles
 };
 

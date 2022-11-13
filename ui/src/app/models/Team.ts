@@ -1,3 +1,5 @@
+import { Player } from "./Player";
+
 export interface Team {
   id: string;
   name: string;
@@ -9,7 +11,7 @@ export interface Team {
   goalsScored: number;
   goalsConceded: number;
   points: number;
-  players: string[];
+  players: Player[];
 }
 
 export class Team implements Team {
@@ -21,9 +23,9 @@ export class Team implements Team {
 export class TeamDto {
   id?: string = undefined;
 
-  constructor(match?: TeamDto) {
-    if (match) {
-      this.id = match.id;
+  constructor(team?: TeamDto) {
+    if (team) {
+      this.id = team.id;
     }
   }
 }

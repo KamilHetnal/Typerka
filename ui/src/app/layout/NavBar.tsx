@@ -11,14 +11,14 @@ export default observer(function NavBar() {
     const { modalStore, userStore: { user, logout, isLoggedin } } = useStore();
 
     return (
-        <Menu inverted fixed='top'>
+        <Menu stackable inverted fixed='top'>
             <Container >
                 <Menu.Item as={NavLink} to='/' exact header>
                     <img src="/assets/logo.png" alt="logo" style={{ marginRight: '10px' }} /> Bet at Bed
                 </Menu.Item>
-                <Menu.Item as={NavLink} to='/matches' name="Mecze" />
-                <Menu.Item as={NavLink} to='/teams' name="Reprezentacje" />
-                <Menu.Item as={NavLink} to='/groups' name="Grupy" />
+                <Menu.Item as={NavLink} to='/matches' name="Typy" />
+                <Menu.Item as={NavLink} to='/teams' name="Grupy" />
+                <Menu.Item as={NavLink} to='/ladder' name="Drabinka" />
                 {isLoggedin ? (
                     <>
                         <AdminList />
@@ -51,10 +51,6 @@ export default observer(function NavBar() {
                         </Button.Group >
                     </Menu.Item>
                 )}
-
-                {/* <Menu.Item>
-                    <Button positive content="Dodaj" />
-                </Menu.Item> */}
             </Container>
         </Menu>
     )

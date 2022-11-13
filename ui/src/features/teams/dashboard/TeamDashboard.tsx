@@ -10,7 +10,7 @@ export default observer(function TeamDashboard() {
     const { loadTeams, teamRegistry, loadingInitial } = teamStore;
 
     useEffect(() => {
-        if (teamRegistry.size <= 0) loadTeams()
+        if (teamRegistry.size <= 1) loadTeams()
     }, [teamRegistry.size, loadTeams])
 
     if (loadingInitial) return <LoadingComponent content='Zbieram dane' />

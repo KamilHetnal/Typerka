@@ -12,6 +12,7 @@ export default observer(function UsersTable() {
         if (profiles?.length === 0)
             loadProfiles()
     }, [profiles?.length, loadProfiles])
+
     return (
         <Table celled>
             <Table.Header>

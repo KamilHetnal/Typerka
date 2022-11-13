@@ -10,7 +10,7 @@ export default observer(function MatchList() {
 
     const panes = groupedMatches.map(([group, matches]) => (
         {
-            menuItem: `${ group }`, render: () => <Tab.Pane>
+            menuItem: `${group}`, render: () => <Tab.Pane>
                 {matches.map((match) => (
                     <MatchListitem key={match.id} match={match} />
                 ))}</Tab.Pane>
@@ -22,8 +22,8 @@ export default observer(function MatchList() {
             <Tab
                 menu={{ fluid: false, vertical: true, }}
                 menuPosition='left'
-                panes={panes} 
-                />
+                panes={panes}
+            />
         </>
     )
 })
