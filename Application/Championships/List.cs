@@ -30,7 +30,7 @@ namespace Application.Championships
 
             public async Task<Result<List<Championship>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<Championship>>.Success(await _context.Champions
+                return Result<List<Championship>>.Success(await _context.Championships
                     .ProjectTo<Championship>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken));
             }

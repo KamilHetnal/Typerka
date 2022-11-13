@@ -9,13 +9,13 @@ using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Teams
+namespace Application.Players
 {
     public class Edit
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Team Team { get; set; }
+            public Player Player { get; set; }
         }
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
@@ -30,16 +30,16 @@ namespace Application.Teams
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var team = await _context.Teams.FindAsync(request.Team.Id);
+                var player = await _context.Players.FindAsync(request.Player.Id);
 
-                if (team == null)
+                if (player == null)
                     return null;
 
-                _mapper.Map(request.Team, team);
+                _mapper.Map(request.Player, player);
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Nie udało się edytować drużyny");
+                if (!result) return Result<Unit>.Failure("Nie udało się edytować zawodnika");
 
                 return Result<Unit>.Success(Unit.Value);
             }

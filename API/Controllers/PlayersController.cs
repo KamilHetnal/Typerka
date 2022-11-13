@@ -19,6 +19,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new List.Query()));
         }
+        [HttpGet("team/{teamId}")]
+        public async Task<ActionResult<List<Player>>> GetPlayersInTeam(Guid teamId)
+        {
+            return HandleResult(await Mediator.Send(new ListInTeam.Query{ TeamId = teamId }));
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(Guid id)

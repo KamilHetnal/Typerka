@@ -10,10 +10,8 @@ namespace Domain
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Country { get; set; }
-        public Guid WinnerId { get; set; }
-        public Team Winner { get; set; }
-        public Guid TopScorerId { get; set; }
-        public Player TopScorer { get; set; }
+        public Guid? WinnerId { get; set; }
+        public Guid? TopScorerId { get; set; }
 
     }
 }

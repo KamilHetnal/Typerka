@@ -9,13 +9,13 @@ using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Application.Core;
 
-namespace Application.Players
+namespace Application.Teams
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Player>>> {}
+        public class Query : IRequest<Result<List<Team>>> {}
 
-        public class Handler : IRequestHandler<Query, Result<List<Player>>>
+        public class Handler : IRequestHandler<Query, Result<List<Team>>>
         {
             private readonly DataContext _context;
 
@@ -24,9 +24,9 @@ namespace Application.Players
                 _context = context;
             }
 
-            public async Task<Result<List<Player>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Team>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<Player>>.Success(await _context.Players.ToListAsync());
+                return Result<List<Team>>.Success(await _context.Teams.ToListAsync());
             }
         }
     }

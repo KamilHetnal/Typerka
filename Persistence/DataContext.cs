@@ -14,7 +14,7 @@ namespace Persistence
         {
 
         }
-        public DbSet<Championship> Champions { get; set; }
+        public DbSet<Championship> Championships { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Player> Players { get; set; }

@@ -12,7 +12,7 @@ namespace Persistence
         public static async Task SeedData(DataContext context,
             UserManager<AppUser> userManager)
         {
-            if (!userManager.Users.Any())
+            /*if (!userManager.Users.Any())
             {
                 var users = new List<AppUser>
                 {
@@ -40,14 +40,17 @@ namespace Persistence
                 {
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
-            }
+            }*/
 
             if (context.Matches.Any()) return;
 
-            var champions = new Championship
+            var championships = new List<Championship>
+            {
+                new Championship
             {
                 Title = "Mistrzostwa Świata 2022",
                 Country = "Katar"
+            }
             };
 
             var teams = new List<Team>
@@ -171,276 +174,68 @@ namespace Persistence
                     {
                         Name = "Kostaryka",
                         Players = new List<Player>()
-{
-new Player
-{
-Name= "Keylor Navas",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Esteban Alvarado",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Patrick Sequeira",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Francisco Calvo",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Juan Pablo Vargas",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Kendall Waston",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Oscar Duarte",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Daniel Chacon",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Keysher Fuller",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Carlos Martínez",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Bryan Oviedo",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Ronald Matarrita",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Yeltsin Tejeda",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Celso Borges",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Youstin Salas",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Roan Wilson",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Gerson Torres",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Douglas Lopez",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Jewison Bennette",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Alvaro Zamora",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Anthony Hernández",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Brandon Aguilera",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Bryan Ruiz",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Joel Campbell",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Anthony Contreras",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Johan Venegas",
-Position= "Napastnik"
-},
-},
+                        {
+                            new Player{Name= "Keylor Navas",Position= "Bramkarz"},
+                            new Player{Name= "Esteban Alvarado",Position= "Bramkarz"},
+                            new Player{Name= "Patrick Sequeira",Position= "Bramkarz"},
+                            new Player{Name= "Francisco Calvo",Position= "Obrońca"},
+                            new Player{Name= "Juan Pablo Vargas",Position= "Obrońca"},
+                            new Player{Name= "Kendall Waston",Position= "Obrońca"},
+                            new Player{Name= "Oscar Duarte",Position= "Obrońca"},
+                            new Player{Name= "Daniel Chacon",Position= "Obrońca"},
+                            new Player{Name= "Keysher Fuller",Position= "Obrońca"},
+                            new Player{Name= "Carlos Martínez",Position= "Obrońca"},
+                            new Player{Name= "Bryan Oviedo",Position= "Obrońca"},
+                            new Player{Name= "Ronald Matarrita",Position= "Obrońca"},
+                            new Player{Name= "Yeltsin Tejeda",Position= "Pomocnik"},
+                            new Player{Name= "Celso Borges",Position= "Pomocnik"},
+                            new Player{Name= "Youstin Salas",Position= "Pomocnik"},
+                            new Player{Name= "Roan Wilson",Position= "Pomocnik"},
+                            new Player{Name= "Gerson Torres",Position= "Pomocnik"},
+                            new Player{Name= "Douglas Lopez",Position= "Pomocnik"},
+                            new Player{Name= "Jewison Bennette",Position= "Pomocnik"},
+                            new Player{Name= "Alvaro Zamora",Position= "Pomocnik"},
+                            new Player{Name= "Anthony Hernández",Position= "Pomocnik"},
+                            new Player{Name= "Brandon Aguilera",Position= "Pomocnik"},
+                            new Player{Name= "Bryan Ruiz",Position= "Pomocnik"},
+                            new Player{Name= "Joel Campbell",Position= "Napastnik"},
+                            new Player{Name= "Anthony Contreras",Position= "Napastnik"},
+                            new Player{Name= "Johan Venegas",Position= "Napastnik"},
+                        },
                         Group = "E"
                     },
                     new Team
                     {
                         Name = "Japonia",
                         Players = new List<Player>()
-{
-new Player
-{
-Name= "Shuichi Gonda",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Daniel Schmidt",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Eiji Kawashima",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Miki Yamane",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Hiroki Sakai",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Maya Yoshida",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Takehiro Tomiyasu",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Shogo Taniguchi",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Ko Itakura",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Hiroki Ito",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Yuto Nagatomo",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Yuta Nakayama",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Wataru Endo",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Hidemasa Morita",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Ao Tanaka",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Gaku Shibasaki",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Kaoru Mitoma",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Daichi Kamada",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Ritsu Doan",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Junya Ito",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Takumi Minamino",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Takefusa Kubo",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Yuki Soma",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Daizen Maeda",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Takuma Asano",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Ayase Ueda",
-Position= "Napastnik"
-},
-},
+                        {
+                            new Player{Name= "Shuichi Gonda",Position= "Bramkarz"},
+                            new Player{Name= "Daniel Schmidt",Position= "Bramkarz"},
+                            new Player{Name= "Eiji Kawashima",Position= "Bramkarz"},
+                            new Player{Name= "Miki Yamane",Position= "Obrońca"},
+                            new Player{Name= "Hiroki Sakai",Position= "Obrońca"},
+                            new Player{Name= "Maya Yoshida",Position= "Obrońca"},
+                            new Player{Name= "Takehiro Tomiyasu",Position= "Obrońca"},
+                            new Player{Name= "Shogo Taniguchi",Position= "Obrońca"},
+                            new Player{Name= "Ko Itakura",Position= "Obrońca"},
+                            new Player{Name= "Hiroki Ito",Position= "Obrońca"},
+                            new Player{Name= "Yuto Nagatomo",Position= "Obrońca"},
+                            new Player{Name= "Yuta Nakayama",Position= "Obrońca"},
+                            new Player{Name= "Wataru Endo",Position= "Pomocnik"},
+                            new Player{Name= "Hidemasa Morita",Position= "Pomocnik"},
+                            new Player{Name= "Ao Tanaka",Position= "Pomocnik"},
+                            new Player{Name= "Gaku Shibasaki",Position= "Pomocnik"},
+                            new Player{Name= "Kaoru Mitoma",Position= "Pomocnik"},
+                            new Player{Name= "Daichi Kamada",Position= "Pomocnik"},
+                            new Player{Name= "Ritsu Doan",Position= "Pomocnik"},
+                            new Player{Name= "Junya Ito",Position= "Pomocnik"},
+                            new Player{Name= "Takumi Minamino",Position= "Pomocnik"},
+                            new Player{Name= "Takefusa Kubo",Position= "Pomocnik"},
+                            new Player{Name= "Yuki Soma",Position= "Pomocnik"},
+                            new Player{Name= "Daizen Maeda",Position= "Napastnik"},
+                            new Player{Name= "Takuma Asano",Position= "Napastnik"},
+                            new Player{Name= "Ayase Ueda",Position= "Napastnik"},
+                        },
                         Group = "E"
                     },
                     new Team
@@ -483,138 +278,34 @@ Position= "Napastnik"
                     {
                         Name = "Brazylia",
                         Players = new List<Player>()
-{
-new Player
-{
-Name= "Alison",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Ederson",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Weverton",
-Position= "Bramkarz"
-},
-new Player
-{
-Name= "Dani Alves",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Danilo",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Alex Sandro",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Alex Telles",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Bremer",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Eder Militao",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Marquinhos",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Thiago Silva",
-Position= "Obrońca"
-},
-new Player
-{
-Name= "Bruno Guimaraes",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Casemiro",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Everton Ribeiro",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Fabinho",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Fred",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Lucas Paqueta",
-Position= "Pomocnik"
-},
-new Player
-{
-Name= "Antony",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Gabriel Jesus",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Gabriel Martinelli",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Neymar",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Pedro",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Raphinha",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Richarlison",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Rodrygo",
-Position= "Napastnik"
-},
-new Player
-{
-Name= "Vinicius Jr",
-Position= "Napastnik"
-},
-},
+                        {
+                            new Player{Name= "Alison",Position= "Bramkarz"},
+                            new Player{Name= "Ederson",Position= "Bramkarz"},
+                            new Player{Name= "Weverton",Position= "Bramkarz"},
+                            new Player{Name= "Dani Alves",Position= "Obrońca"},
+                            new Player{Name= "Danilo",Position= "Obrońca"},
+                            new Player{Name= "Alex Sandro",Position= "Obrońca"},
+                            new Player{Name= "Alex Telles",Position= "Obrońca"},
+                            new Player{Name= "Bremer",Position= "Obrońca"},
+                            new Player{Name= "Eder Militao",Position= "Obrońca"},
+                            new Player{Name= "Marquinhos",Position= "Obrońca"},
+                            new Player{Name= "Thiago Silva",Position= "Obrońca"},
+                            new Player{Name= "Bruno Guimaraes",Position= "Pomocnik"},
+                            new Player{Name= "Casemiro",Position= "Pomocnik"},
+                            new Player{Name= "Everton Ribeiro",Position= "Pomocnik"},
+                            new Player{Name= "Fabinho",Position= "Pomocnik"},
+                            new Player{Name= "Fred",Position= "Pomocnik"},
+                            new Player{Name= "Lucas Paqueta",Position= "Pomocnik"},
+                            new Player{Name= "Antony",Position= "Napastnik"},
+                            new Player{Name= "Gabriel Jesus",Position= "Napastnik"},
+                            new Player{Name= "Gabriel Martinelli",Position= "Napastnik"},
+                            new Player{Name= "Neymar",Position= "Napastnik"},
+                            new Player{Name= "Pedro",Position= "Napastnik"},
+                            new Player{Name= "Raphinha",Position= "Napastnik"},
+                            new Player{Name= "Richarlison",Position= "Napastnik"},
+                            new Player{Name= "Rodrygo",Position= "Napastnik"},
+                            new Player{Name= "Vinicius Jr",Position= "Napastnik"},
+                        },
                         Group = "G",
 
                     },
@@ -1026,13 +717,14 @@ Position= "Napastnik"
                     },
                 };
 
-            //await context.Champions.AddAsync(champions);
 
-            //await context.Teams.AddRangeAsync(teams);
+        //await context.Teams.AddRangeAsync(teams);
 
-            await context.Matches.AddRangeAsync(matches);
+         //await context.Matches.AddRangeAsync(matches);
 
-            await context.SaveChangesAsync();
+        await context.Championships.AddRangeAsync(championships);
+        
+        await context.SaveChangesAsync();
         }
     }
 }

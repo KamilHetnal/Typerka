@@ -31,7 +31,7 @@ namespace Application.Championships
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var championship = await _context.Champions.FindAsync(request.Championship.Id);
+                var championship = await _context.Championships.FindAsync(request.Championship.Id);
 
                 var championBets = await _context.ChampionBets.ToListAsync();
 
@@ -39,6 +39,9 @@ namespace Application.Championships
 
                 if (championship == null)
                     return null;
+                
+                request.Championship.Title = championship.Title;
+                request.Championship.Country = championship.Country;
 
                 _mapper.Map(request.Championship, championship);
 
@@ -49,10 +52,9 @@ namespace Application.Championships
                 }
 
                 foreach (var king in topScorerBets)
-                    if (king.TopScorerId == championship.TopScorerId)
-                        king.Points = 10;
                 {
-                    
+                    if (king.TopScorerId == championship.TopScorerId)
+                        king.Points = 10;   
                 }
 
                 var result = await _context.SaveChangesAsync() > 0;

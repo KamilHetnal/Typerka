@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Application.Bets;
 using Application.ChampionBets;
 using Application.Matches;
+using Application.Players;
+using Application.Teams;
 using Application.TopScorerBets;
 using AutoMapper;
 using Domain;
@@ -16,25 +18,36 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<Team, Team>();
-            CreateMap<Player, Player>();
             CreateMap<Championship, Championship>();
+            CreateMap<Team, Team>();
+            CreateMap<Team, TeamDto>();
+            CreateMap<Team, TeamForMatchDto>();
+
+            CreateMap<Player, Player>();
+            CreateMap<Player, PlayerDto>();
+
             CreateMap<Match, Match>()
+                .ForMember(t => t.HomeTeam, m => m.MapFrom(s => s.HomeTeam))
                 .ForMember(d => d.MatchBets, d => d.MapFrom(d => d.MatchBets));
             CreateMap<Match, MatchDto>()
                 .ForMember(d => d.MatchBets, d => d.MapFrom(d => d.MatchBets));
+
             CreateMap<Bet, Bet>()
                 .ForMember(m => m.Match, m => m.MapFrom(m => m.Match))
                 .ForMember(d => d.BetDate, d => d.MapFrom(d => d.BetDate));
-            CreateMap<Match, Match>().ForMember(t => t.HomeTeam, m => m.MapFrom(s => s.HomeTeam));
+            CreateMap<Bet, BetDto>();
+
+            CreateMap<ChampionBet, ChampionBet>();
+            CreateMap<ChampionBet, ChampionBetDto>()
+                .ForMember(d => d.BetPoints, o => o.MapFrom(s => s.Points));
+
+            CreateMap<TopScorerBet, TopScorerBet>();
+            CreateMap<TopScorerBet, TopScorerBetDto>()
+                .ForMember(d => d.BetPoints, o => o.MapFrom(s => s.Points));;
+                
             CreateMap<IdentityRole, IdentityRole>();
             CreateMap<AppUser, Profiles.Profile>()
                 .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url));
-            CreateMap<Bet, BetDto>();
-            CreateMap<ChampionBet, ChampionBet>();
-            CreateMap<ChampionBet, ChampionBetDto>();
-            CreateMap<TopScorerBet, TopScorerBet>();
-            CreateMap<TopScorerBet, TopScorerBetDto>();
         }
     }
 }

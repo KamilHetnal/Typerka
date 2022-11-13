@@ -40,6 +40,7 @@ namespace Application.Matches
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                
                 var match = await _context.Matches.FindAsync(request.Match.Id);
 
                 if (match == null)

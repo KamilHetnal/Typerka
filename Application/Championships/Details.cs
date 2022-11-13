@@ -28,7 +28,7 @@ namespace Application.Championships
 
             public async Task<Result<Championship>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<Championship>.Success(await _context.Champions
+                return Result<Championship>.Success(await _context.Championships
                     .FindAsync(request.Id));
             }
         }
