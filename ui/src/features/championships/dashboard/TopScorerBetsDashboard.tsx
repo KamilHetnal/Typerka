@@ -1,3 +1,4 @@
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite'
 import React, { useEffect } from 'react'
 import { Container, Grid, List} from 'semantic-ui-react';
@@ -5,23 +6,36 @@ import { useStore } from '../../../app/stores/store'
 
 export default observer(function TopScorerBetsDashboard() {
     const { topScorerStore, profileStore, playerStore } = useStore();
-    const { loadTopScorerBets, groupedBets } = topScorerStore;
+    const { loadTopScorerBets, betsTopScorers, topScorerBetRegistry } = topScorerStore;
     const { loadProfiles, profiles } = profileStore
-    const { loadPlayers, playersOnPosition } = playerStore
+    const { loadPlayers, players } = playerStore
 
     useEffect(() => {
-        if (profiles?.length === 0)
+        if (profiles?.length! <= 1)
             loadProfiles()
     }, [profiles, loadProfiles]);
     useEffect(() => {
-        if (playersOnPosition?.length <= 2)
+        if (players?.length <= 1)
             loadPlayers()
-    }, [playersOnPosition, loadPlayers]);
+    }, [players, loadPlayers]);
 
     useEffect(() => {
-        if (groupedBets.length === 0)
+        if (topScorerBetRegistry.size <= 1)
             loadTopScorerBets()
-    }, [groupedBets.length, loadTopScorerBets]);
+    }, [topScorerBetRegistry.size, loadTopScorerBets]);
+
+    topScorerBetRegistry.forEach(element => {
+        runInAction(() => {
+          element.topScorerId = (players.find(p => p.id == element.topScorerId)) ?
+            players?.find(p => p.id == element.topScorerId)?.name! :
+            element.topScorerId;
+          element.appUserId = (profiles?.find(p => p.id === element.appUserId)?.displayName)
+            ?
+            profiles?.find(p => p.id === element.appUserId)?.displayName!
+            :
+            element.appUserId
+        })
+      })
 
     const gridStyle = {
         backgroundColor: 'white',
@@ -32,15 +46,12 @@ export default observer(function TopScorerBetsDashboard() {
 
     return (
         <Container text>
-            {groupedBets.map(([group, bets]) => (
+            {betsTopScorers.map(([group, bets]) => (
                 <Grid key={group} columns={2} style={gridStyle} divided>
                     <Grid.Column>
                         <Grid columns={2}>
                             <Grid.Column>
-                                {playersOnPosition.find(p => p.id === group)?.name}
-                            </Grid.Column>
-                            <Grid.Column>
-                                {playersOnPosition.find(p => p.id === group)?.goals}
+                                {group}
                             </Grid.Column>
                         </Grid>
                     </Grid.Column>
@@ -48,7 +59,7 @@ export default observer(function TopScorerBetsDashboard() {
                         {bets.map((bet) => (
                             <List key={bet.id} as='ul'>
                                 <List as='li'>
-                                    {profiles?.find(p => p.id === bet.appUserId)?.displayName}
+                                    {bet.appUserId}
                                 </List>
                             </List>
                         ))}

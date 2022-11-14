@@ -1,17 +1,24 @@
-import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { Match } from '../../../app/models/Match'
-import { format } from 'date-fns';
-import { Segment } from 'semantic-ui-react';
+import { format, parseISO } from 'date-fns';
+import { Header, Segment } from 'semantic-ui-react';
 
 interface Props {
-    match: Match
+  matchDate: Date
 }
 
-export default observer(function MatchDetailsHeader({match}: Props) {
+export default function MatchDetailsHeader({ matchDate }: Props) {
+
   return (
-    <Segment textAlign='center' color='teal' style={{fontSize: '20px'}}>
-        {format(match.matchDate!, 'dd-MM-yyyy: H:mm')}
+    <Segment textAlign='center' color='teal' >
+      <Header as='h1' content={matchDate instanceof Date ?
+        <>
+          {format(matchDate, 'dd-MM-yyyy: HH:mm')}
+        </>
+        :
+        <>
+          {format(parseISO(matchDate), 'dd-MM-yyyy: HH:mm')}
+        </>}
+      />
     </Segment>
   )
-})
+}

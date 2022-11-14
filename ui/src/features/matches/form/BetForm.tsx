@@ -8,6 +8,8 @@ import MyNumberInput from '../../../app/common/form/MyNumberInput';
 import { Button, Label } from 'semantic-ui-react';
 import { Match } from '../../../app/models/Match';
 import * as Yup from 'yup';
+import MatchListitem from '../dashboard/MatchListitem';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   matchBetId?: string
@@ -15,11 +17,11 @@ interface Props {
 }
 
 export default observer(function BetForm({ matchBetId, matchId }: Props) {
-
+  const history = useHistory();
   const { betStore, modalStore, matchStore } = useStore();
 
   const { loadBet, createBet, updateBet } = betStore;
-  const { loadMatch } = matchStore;
+  const { loadMatch , setLoadingInitial } = matchStore;
 
   const [bet, setBet] = useState<BetFormValues>(new BetFormValues());
   const [match, setMatch] = useState<Match>(new Match());
@@ -69,10 +71,8 @@ export default observer(function BetForm({ matchBetId, matchId }: Props) {
       >
         {({ handleSubmit, isValid, isSubmitting }) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-            <Label content={match.homeTeam?.name} color='violet' basic style={{width: '100%'}}/>
-            <MyNumberInput placeholder='Gole Gospodarza' name='homeScore' />
-            <Label content={match.awayTeam?.name} color='blue' basic style={{width: '100%'}}/>
-            <MyNumberInput placeholder='Gole Gościa' name='awayScore' />
+            <MyNumberInput placeholder='Gole Gospodarza' name='homeScore' label={match.homeTeam?.name} />
+            <MyNumberInput placeholder='Gole Gościa' name='awayScore' label={match.awayTeam?.name} />
             <Button
               disabled={isSubmitting || !isValid}
               loading={isSubmitting} floated='right' positive type='submit'>Dodaj</Button>

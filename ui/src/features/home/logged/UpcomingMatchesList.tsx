@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Grid, Segment, Image } from 'semantic-ui-react'
 import { useStore } from '../../../app/stores/store'
 import { format } from 'date-fns'
@@ -7,14 +7,21 @@ import { NavLink } from 'react-router-dom'
 
 export default observer(function UpcomingMatchesList() {
     const { matchStore } = useStore()
-    const { matchesByDate } = matchStore
+    const { matches, loadMatches } = matchStore
+
+    useEffect(() => {
+        if(matches.length <= 1)
+        loadMatches()
+      }, [loadMatches])
+    const upcomingMatches = matches.filter(m => m.matchDate >= new Date()).slice(0, 5)
 
     const itemStyle = {
         borderTop: '0.2em solid #2185d0'
     }
+    
     return (
-        <>
-            {matchesByDate.filter(m => m.matchDate >= new Date()).slice(0, 5).map((match) => (
+        <Segment.Group>
+            {upcomingMatches.map((match) => (
                 <Segment key={match.id}>
                     <Grid>
                         <Grid.Row columns={4} style={itemStyle}>
@@ -36,6 +43,6 @@ export default observer(function UpcomingMatchesList() {
                     </Grid>
                 </Segment>
             ))}
-        </>
+        </Segment.Group>
     )
 })

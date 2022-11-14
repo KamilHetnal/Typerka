@@ -8,7 +8,8 @@ export default class ProfileStore {
   profiles: Profile[] | null = [];
   loadingProfile = false;
   uploading = false;
-  loading = false;
+  activeTab: number = 0;
+  loadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -22,13 +23,18 @@ export default class ProfileStore {
   }
 
   loadProfiles = async() => {
+    this.setLoadingInitial(true);
     try {
       const profiles = await agent.Profiles.list()
       profiles.forEach((profile) => {
-        this.profiles?.push(profile);
-      })
+        runInAction(() => {
+          this.profiles?.push(profile);
+        })
+      });
+      this.setLoadingInitial(true);
     } catch (error) {
       console.log(error);
+      this.setLoadingInitial(true);
     }
   }
 
@@ -77,7 +83,7 @@ export default class ProfileStore {
     }
   };
   setMainPhoto = async (photo: Photo) => {
-    this.loading = true;
+    this.setLoadingInitial(true);
     try {
       await agent.Profiles.setMainPhoto(photo.id);
       store.userStore.setImage(photo.url);
@@ -86,16 +92,16 @@ export default class ProfileStore {
           this.profile.photos.find((p) => p.isMain)!.isMain = false;
           this.profile.photos.find((p) => p.id === photo.id)!.isMain = true;
           this.profile.image = photo.url;
-          this.loading = false;
+          this.setLoadingInitial(false);
         }
       });
     } catch (error) {
-      runInAction(() => (this.loading = false));
+      runInAction(() => (this.setLoadingInitial(false)));
       console.log(error);
     }
   };
   deletePhoto = async (photo: Photo) => {
-    this.loading = true;
+    this.setLoadingInitial(true);
     try {
       await agent.Profiles.deletePhoto(photo.id);
       runInAction(() => {
@@ -103,12 +109,20 @@ export default class ProfileStore {
           this.profile.photos = this.profile.photos?.filter(
             (p) => p.id !== photo.id
           );
-          this.loading = true;
+          this.setLoadingInitial(true);
         }
       });
     } catch (error) {
-      runInAction(() => (this.loading = false));
+      runInAction(() => (this.setLoadingInitial(false)));
       console.log(error);
     }
+  };
+
+  setActiveTab = (activeIndex: number) => {
+    this.activeTab = activeIndex;
+} 
+
+  setLoadingInitial = (state: boolean) => {
+    this.loadingInitial = state;
   };
 }

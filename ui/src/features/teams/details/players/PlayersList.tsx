@@ -13,12 +13,12 @@ export default observer(function PlayersList() {
     const decodedRoles = getRoles();
     return (
         <>
-            {groupedPlayers.map(([group, players]) => (
-                <Segment key={group} >
+            {groupedPlayers.map(([position, players]) => (
+                <Segment key={position} >
                     <List >
                         {players.map(player => (
                             <Grid columns={2} key={player.id} >
-                                <Grid.Column>
+                                <Grid.Column width={12}>
                                     {decodedRoles?.includes('admin') ?
                                         <Button
                                             circular
@@ -32,7 +32,7 @@ export default observer(function PlayersList() {
                                     }
                                     {player.name}
                                 </Grid.Column>
-                                <Grid.Column textAlign='right' style={{ paddingRight: '15px' }}>{player.goals}</Grid.Column>
+                                <Grid.Column textAlign='center' width={4}>{player.goals}</Grid.Column>
                             </Grid>
                         ))}
                     </List>

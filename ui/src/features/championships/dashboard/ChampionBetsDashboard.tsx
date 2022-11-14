@@ -1,28 +1,43 @@
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite'
 import React, { useEffect } from 'react'
 import { Container, Grid, Header, List } from 'semantic-ui-react';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store';
 
 export default observer(function ChampionBetsDashboard() {
   const { championBetStore, profileStore, teamStore } = useStore();
-  const { loadChampionBets, groupedBets } = championBetStore;
+  const { loadChampionBets, betsChampions, championBetRegistry, loadingInitial } = championBetStore;
   const { loadProfiles, profiles } = profileStore
-  const { loadTeams, teamsInGroups } = teamStore
+  const { loadTeams, teams } = teamStore
 
   useEffect(() => {
-    if (profiles?.length === 0)
+    if (profiles?.length! <= 1)
       loadProfiles()
-  }, [profiles, loadProfiles]);
+  }, [profiles?.length, loadProfiles]);
   useEffect(() => {
-    if (teamsInGroups?.length === 0)
+    if (teams.length <= 1)
       loadTeams()
-  }, [teamsInGroups.length, loadTeams]);
+  }, [teams.length, loadTeams]);
 
 
   useEffect(() => {
-    if (groupedBets.length === 0)
+    if (championBetRegistry.size <= 1)
       loadChampionBets()
-  }, [groupedBets.length, loadChampionBets]);
+  }, [championBetRegistry.size, loadChampionBets]);
+
+  championBetRegistry.forEach(element => {
+    runInAction(() => {
+      element.championId = (teams.find(t => t.id == element.championId)) ?
+        teams?.find(t => t.id == element.championId)?.name! :
+        element.championId;
+      element.appUserId = (profiles?.find(t => t.id === element.appUserId)?.displayName)
+        ?
+        profiles?.find(t => t.id === element.appUserId)?.displayName!
+        :
+        element.appUserId
+    })
+  })
 
   const gridStyle = {
     backgroundColor: 'white',
@@ -31,18 +46,19 @@ export default observer(function ChampionBetsDashboard() {
     marginTop: '1em'
   }
 
+  if (loadingInitial) { <LoadingComponent content='wczytuję...' /> }
   return (
     <Container text>
-      {groupedBets.map(([group, bets]) => (
-        <Grid key={group} columns={2} style={gridStyle} divided>
+      {betsChampions.map(([champion, bets]) => (
+        <Grid key={champion} columns={2} style={gridStyle} divided>
           <Grid.Column>
-            <Header as={'h3'} content={teamsInGroups.find(p => p.id === group)?.name} />
+            <Header as={'h3'} content={champion} />
           </Grid.Column>
           <Grid.Column>
             {bets.map((bet) => (
               <List key={bet.id} as='ul'>
                 <List.Item as='li'>
-                  {profiles?.find(p => p.id === bet.appUserId)?.displayName}
+                  {bet.appUserId}
                 </List.Item>
               </List>
             ))}

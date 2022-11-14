@@ -7,12 +7,13 @@ import LadderMatchItem from './LadderMatchItem';
 
 export default observer(function LadderDashboard() {
   const { matchStore } = useStore();
-  const { loadMatches, matchesByDate, loadingInitial } = matchStore;
+  const { loadMatches, matches, loadingInitial } = matchStore;
 
   useEffect(() => {
+    if (matches.length <= 1)
     loadMatches()
-  }, [loadMatches])
-  const ladderMatches = matchesByDate.slice(48)
+  }, [matches.length, loadMatches])
+  const ladderMatches = matches.slice(48)
 
   if (loadingInitial) return <LoadingComponent content='Zbieram dane' />
   return (

@@ -14,16 +14,16 @@ export default observer(function ChampionBetForm() {
     const { championBetStore, teamStore, userStore: { user }, profileStore, modalStore: { closeModal } } = useStore();
     const { loadChampionBet, createChampionBet, updateChampionBet } = championBetStore;
     const { loadProfile, profile } = profileStore;
-    const { loadTeamsArray, teams, loadingInitial } = teamStore;
+    const { loadTeams, teams, loadingInitial } = teamStore;
 
     useEffect(() => {
         loadProfile(user?.username!);
     }, [loadProfile, user])
 
     useEffect(() => {
-        if (teams.length === 0)
-            loadTeamsArray()
-    }, [teams.length, loadTeamsArray])
+        if (teams.length <= 1)
+            loadTeams()
+    }, [teams.length, loadTeams])
 
 
     const [bet, setBet] = useState<ChampionBetFormValues>(new ChampionBetFormValues());

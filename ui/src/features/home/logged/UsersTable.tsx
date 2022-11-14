@@ -23,7 +23,6 @@ export default observer(function UsersTable() {
         backgroundColor: 'white',
         borderBottom: '1px solid lightgrey' 
     }
-
     return (
         <Grid columns={2} >
             <Grid.Row color='blue' style={headerStyle}>

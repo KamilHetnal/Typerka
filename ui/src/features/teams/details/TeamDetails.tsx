@@ -13,7 +13,7 @@ import TeamPlayersList from './TeamPlayersList'
 export default observer(function TeamDetails() {
     const { teamStore, matchStore, userStore: { getRoles }, modalStore: { openModal } } = useStore();
     const { team, loadTeam, loadingInitial } = teamStore;
-    const { loadMatchesForTeam, matchRegistry } = matchStore;
+    const { loadMatches, matches } = matchStore;
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
@@ -21,16 +21,14 @@ export default observer(function TeamDetails() {
     }, [id, loadTeam])
 
     useEffect(() => {
-        if (id) {
-            matchRegistry.clear();
-            loadMatchesForTeam(id)
-        }
-    }, [id, matchRegistry, loadMatchesForTeam])
-
-    const decodedRoles = getRoles();
+        if (matches.length <= 1)
+            loadMatches()
+    }, [matches.length, loadMatches])
 
     if (loadingInitial || !team) return <LoadingComponent content='Wczytuję...' />
+    const decodedRoles = getRoles();
 
+    const teamMatches = matches.filter(m => m.homeTeam?.id === id || m.awayTeam?.id === id)
     return (
         <Container text>
             <TeamInfo team={team} />
@@ -49,7 +47,7 @@ export default observer(function TeamDetails() {
                 </Grid.Column>
                 <Grid.Column>
                     <Header as={'h2'} textAlign='center' content={'Mecze'} />
-                    <TeamMatchesList />
+                    <TeamMatchesList matches={teamMatches}/>
                 </Grid.Column>
             </Grid>
         </Container>

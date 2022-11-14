@@ -16,7 +16,7 @@ export default class TopScorerBetStore {
     return Array.from(this.topScorerBetRegistry.values()).sort((a, b) => a.topScorerId?.localeCompare(b.topScorerId))
   }
 
-  get groupedBets() {
+  get betsTopScorers() {
     return Object.entries(
       this.betsInGroups.reduce((bets, bet) => {
         bets[bet.topScorerId] = bets[bet.topScorerId]

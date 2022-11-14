@@ -16,7 +16,7 @@ export default class ChampionBetStore {
         return Array.from(this.championBetRegistry.values()).sort((a, b) => a.championId?.localeCompare(b.championId))
       }
     
-      get groupedBets() {
+      get betsChampions() {
         return Object.entries(
           this.betsInGroups.reduce((bets, bet) => {
             bets[bet.championId] = bets[bet.championId]

@@ -3,7 +3,6 @@ import agent from '../api/agent';
 import { Team, TeamFormValues } from '../models/Team';
 
 export default class TeamStore {
-  teams: Team[] = [];
   teamRegistry = new Map<string, Team>();
   team: Team | undefined = undefined;
   loading = false;
@@ -13,33 +12,22 @@ export default class TeamStore {
     makeAutoObservable(this);
   }
 
-  get teamsInGroups() {
-    return Array.from(this.teamRegistry.values()).sort((a, b) => a.group?.localeCompare(b.group))
+  get teams() {
+    return Array.from(this.teamRegistry.values())
+      .sort((a,b) => a.group?.localeCompare(b.group))
+      .sort((b,a) => a.points - b.points)
+      .sort((b,a) => (a.goalsScored - a.goalsConceded) - (b.goalsScored - b.goalsConceded))
   }
 
   get groupedTeams() {
     return Object.entries(
-      this.teamsInGroups.reduce((teams, team) => {
+      this.teams.reduce((teams, team) => {
         teams[team.group] = teams[team.group]
-          ? [...teams[team.group], team].sort((b,a) => a.points - b.points).sort((b,a) => (a.goalsScored - a.goalsConceded) - (b.goalsScored - b.goalsConceded))
-          : [team].sort((b,a) => a.points - b.points).sort((a,b) => (a.goalsScored - a.goalsConceded) - (b.goalsScored - b.goalsConceded))
+          ? [...teams[team.group], team]
+          : [team]
           return teams
       }, {} as { [key: string]: Team[]})
     );
-  }
-
-  loadTeamsArray = async () => {
-    this.setLoadingInitial(true);
-    try {
-      const teams = await agent.Teams.list();
-      teams.forEach(team => {
-        this.teams.push(team)
-        this.setLoadingInitial(false);
-      })
-    } catch (error) {
-      console.log(error)
-      this.setLoadingInitial(false);
-    }
   }
 
   loadTeams = async () => {

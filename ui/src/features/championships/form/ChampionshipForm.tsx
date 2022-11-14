@@ -16,21 +16,21 @@ export default observer(function ChampionshipForm({ id }: Props) {
     const { championshipStore, teamStore, modalStore, playerStore } = useStore();
 
     const { loadChampionship, updateChampionship } = championshipStore;
-    const { loadTeamsArray, teams } = teamStore;
-    const { loadPlayers, playersOnPosition } = playerStore;
+    const { loadTeams, teams } = teamStore;
+    const { loadPlayers, players } = playerStore;
     const { closeModal } = modalStore;
 
     useEffect(() => {
-        if (teams.length === 0)
-            loadTeamsArray()
-    }, [teams, loadTeamsArray])
+        if (teams.length <= 1)
+            loadTeams()
+    }, [teams.length, loadTeams])
 
     useEffect(() => {
-        if (playersOnPosition.length === 0)
+        if (players.length <= 1)
             loadPlayers()
-    }, [playersOnPosition, loadPlayers])
+    }, [players, loadPlayers])
 
-    const players = playersOnPosition.sort((a, b) => b.goals - a.goals).filter(p => p.goals !== 0)
+    const topPlayers = players.sort((a, b) => b.goals - a.goals).filter(p => p.goals !== 0)
 
     const [champ, setChamp] = useState<ChampionshipFormValue>(new ChampionshipFormValue());
 
@@ -69,7 +69,7 @@ export default observer(function ChampionshipForm({ id }: Props) {
                         <MySelectInput
                             placeholder="Piłkarze"
                             name='topScorerId'
-                            options={players.map(p => ({
+                            options={topPlayers.map(p => ({
                                 "key": p.id,
                                 "text": p.name,
                                 "value": p.id

@@ -6,18 +6,19 @@ import { useStore } from '../../../app/stores/store'
 import MatchList from './MatchList';
 
 export default observer(function MatchesDashboard() {
-  const {matchStore} = useStore();
-  const {loadMatches, loadingInitial} = matchStore;
+  const {matchStore, profileStore: {setActiveTab}} = useStore();
+  const {loadMatches, matchRegistry, groupedMatches, loadingInitial} = matchStore;
 
   useEffect(() => {
+    if(matchRegistry.size <= 1)
       loadMatches()
-  }, [loadMatches])
+  }, [matchRegistry.size, loadMatches])
 
   if (loadingInitial) return <LoadingComponent content='Zbieram dane' />
 
   return (
     <Container text style={{ marginTop: '7em' }}>
-      <MatchList />
+      <MatchList setActiveTab={setActiveTab} matches={groupedMatches}/>
     </Container>
   )
 })

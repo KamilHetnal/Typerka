@@ -11,12 +11,12 @@ import LoadingComponent from '../../../app/layout/LoadingComponent';
 
 export default observer(function FilterTeamForm() {
     const { teamStore, modalStore: { openModal } } = useStore();
-    const { loadTeamsArray, teams, loadingInitial } = teamStore;
+    const { loadTeams, teams, loadingInitial } = teamStore;
 
     useEffect(() => {
-        if (teams.length === 0)
-            loadTeamsArray()
-    }, [teams, loadTeamsArray])
+        if (teams.length <= 1)
+            loadTeams()
+    }, [teams.length, loadTeams])
 
     const validationSchema = Yup.object({
         id: Yup.string().required('Wskazanie drużyny jest wymagane')

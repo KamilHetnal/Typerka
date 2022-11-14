@@ -22,24 +22,25 @@ export default observer(function MatchForm({ id }: Props) {
   const { matchStore, teamStore, modalStore } = useStore();
 
   const { loadMatch, createMatch, updateMatch } = matchStore;
-  const { loadTeamsArray, teams } = teamStore;
+  const { loadTeams, teams } = teamStore;
   const { closeModal } = modalStore;
 
   useEffect(() => {
-    loadTeamsArray()
-  }, [teamStore, loadTeamsArray])
+    if(teams.length <= 1)
+    loadTeams()
+  }, [teams.length, loadTeams])
 
-
+  
   const [match, setMatch] = useState<MatchFormValues>(new MatchFormValues());
-
+  
   const validationSchema = Yup.object({
     matchDate: Yup.string().required('Podanie daty jest wymagane')
   })
-
+  
   useEffect(() => {
     if (id) loadMatch(id).then(match => setMatch(new MatchFormValues(match)))
   }, [id, loadMatch]);
-
+  
   function handleFormSubmit(match: MatchFormValues) {
     if (!match.id) {
       let newMatch = {

@@ -11,7 +11,7 @@ interface Props {
 
 export default observer(function ProfilePhotos({ profile }: Props) {
     const { profileStore: { isCurrentUser, uploadPhoto,
-        uploading, loading, setMainPhoto, deletePhoto } } = useStore();
+        uploading, loadingInitial, setMainPhoto, deletePhoto } } = useStore();
     const [addPhotoMode, setAddPhotoMode] = useState(false);
     const [target, setTarget] = useState('');
 
@@ -56,13 +56,13 @@ export default observer(function ProfilePhotos({ profile }: Props) {
                                                 content='Main'
                                                 name={'main' + photo.id}
                                                 disabled={photo.isMain}
-                                                loading={target ==='main' + photo.id && loading}
+                                                loading={target ==='main' + photo.id && loadingInitial}
                                                 onClick={e => handleSetMainPhoto(photo, e)}
                                             />
                                             <Button
                                                 basic color='red'
                                                 icon='trash'
-                                                loading={target === photo.id && loading}
+                                                loading={target === photo.id && loadingInitial}
                                                 onClick={e => handleDeletePhoto(photo, e)}
                                                 disabled={photo.isMain}
                                                 name={photo.id} 

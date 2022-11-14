@@ -5,7 +5,7 @@ import { useStore } from '../../app/stores/store'
 import ChampionshipDashboard from '../championships/dashboard/ChampionshipDashboard'
 import LoginForm from '../users/LoginForm'
 import RegisterForm from '../users/RegisterForm'
-import UpcomingMatches from './logged/UpcomingMatches'
+import UpcomingMatchesList from './logged/UpcomingMatchesList'
 import UsersTable from './logged/UsersTable'
 
 export default observer(function HomePage() {
@@ -34,10 +34,9 @@ export default observer(function HomePage() {
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <Header size='medium' textAlign='center' content="Najblizsze mecze" />
-                            <UpcomingMatches />
+                            <UpcomingMatchesList />
                         </Grid.Column>
                     </Grid.Row>
-
                 </Grid>
             ) : (
                 <Segment textAlign="center" vertical>

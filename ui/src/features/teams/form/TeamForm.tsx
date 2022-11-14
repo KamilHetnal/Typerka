@@ -43,8 +43,8 @@ export default observer(function TeamForm({id}: Props) {
     >
       {({ handleSubmit, isValid, isSubmitting, dirty }) => (
         <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-          <MyTextInput placeholder='Nazwa' name={'name'} label='Nazwa'/>
-          <MyTextInput placeholder='Grupa' name={'group'} label= 'Grupa'/>
+          <MyTextInput placeholder='Nazwa' name='name' label='Nazwa'/>
+          <MyTextInput placeholder='Grupa' name='group' label= 'Grupa'/>
           <MyNumberInput label='Rozegrane mecze' placeholder='Rozegrane mecze' name='matchesPlayed' />
           <MyNumberInput label='Wygrane' placeholder='Wygrane' name='wins' />
           <MyNumberInput label='Przegrane' placeholder='Przegrane' name='losses' />

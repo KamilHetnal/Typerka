@@ -16,7 +16,7 @@ export default observer(function TopScorerBetForm({teamId}: Props) {
   const { topScorerStore, userStore: { user }, profileStore, modalStore: { closeModal }, playerStore } = useStore();
   const { loadTopScorerBet, createTopScorerBet, updateTopScorerBet } = topScorerStore;
   const { loadProfile, profile } = profileStore;
-  const { loadPlayersInTeam, playersOnPosition } = playerStore
+  const { loadPlayersInTeam, players } = playerStore
 
   useEffect(() => {
     loadProfile(user?.username!);
@@ -64,7 +64,7 @@ export default observer(function TopScorerBetForm({teamId}: Props) {
             <MySelectInput
               placeholder="Piłkarze"
               name='topScorerId'
-              options={playersOnPosition.map(p => ({
+              options={players.map(p => ({
                 "key": p.id,
                 "text": p.name,
                 "value": p.id

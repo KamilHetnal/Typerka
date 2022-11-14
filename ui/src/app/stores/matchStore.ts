@@ -12,14 +12,14 @@ export default class MatchStore {
   constructor() {
     makeAutoObservable(this);
   }
-  get matchesByDate() {
-    return Array.from(this.matchRegistry.values()).sort((a,b) => 
-        a.matchDate.getTime()- b.matchDate.getTime())
+  get matches() {
+    return Array.from(this.matchRegistry.values())
+    .sort((a,b) => a.matchDate.getTime()- b.matchDate.getTime())
   }
 
   get groupedMatches() {
     return Object.entries(
-      this.matchesByDate.reduce((matches, match) => {
+      this.matches.reduce((matches, match) => {
         const date = format(match.matchDate!, 'dd-MM');
         matches[date] = matches[date]
           ? [...matches[date], match]
@@ -33,20 +33,6 @@ export default class MatchStore {
     this.setLoadingInitial(true);
     try {
       const matches = await agent.Matches.list();
-      matches.forEach((match) => {
-        runInAction(() => this.setMatch(match))
-      });
-      this.setLoadingInitial(false);
-    } catch (error) {
-      console.log(error);
-      this.setLoadingInitial(false);
-    }
-  };
-
-  loadMatchesForTeam = async (id: string) => {
-    this.setLoadingInitial(true);
-    try {
-      const matches = await agent.Matches.listForTeam(id);
       matches.forEach((match) => {
         runInAction(() => this.setMatch(match))
       });
@@ -80,15 +66,18 @@ export default class MatchStore {
   };
 
   createMatch = async (match: MatchFormValues) => {
+    this.setLoadingInitial(true)
     try {
       await agent.Matches.create(match);
       const newMatch = new Match(match);
       this.setMatch(newMatch);
       runInAction(() => {
         this.match = newMatch;
+        this.setLoadingInitial(false)
       });
     } catch (error) {
       console.log(error);
+      this.setLoadingInitial(false)
     }
   };
 

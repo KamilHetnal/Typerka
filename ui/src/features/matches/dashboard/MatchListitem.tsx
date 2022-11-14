@@ -14,13 +14,12 @@ interface Props {
 
 export default function MatchListitem({ match }: Props) {
     const { betStore, userStore } = useStore();
+    const { loadBet } = betStore;
+    const { getLoggedUser } = userStore;
 
     const itemStyle = {
         borderTop: '0.2em solid #2185d0'
     }
-
-    const { loadBet } = betStore;
-    const { getLoggedUser } = userStore;
 
     const [matchBet, setMatchBet] = useState<Bet>(new Bet());
 
@@ -29,8 +28,10 @@ export default function MatchListitem({ match }: Props) {
     const matchBetId = match.matchBets.filter(m => m?.match?.id !== match.id).find(u => u.appUserId === decodedUserId)?.id
 
     useEffect(() => {
-        if (matchBetId) loadBet(matchBetId).then(matchBet => setMatchBet(new Bet(matchBet)))
-    }, [matchBetId, loadBet])
+        console.log(matchBetId)
+        if (matchBetId) 
+        loadBet(matchBetId).then(matchBet => setMatchBet(new Bet(matchBet)))
+    }, [matchBetId, loadBet, setMatchBet, match.matchBets.length])
 
     return (
         <Grid columns={2} style={itemStyle} divided>

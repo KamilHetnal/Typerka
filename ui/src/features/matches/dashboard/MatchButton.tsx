@@ -10,27 +10,28 @@ interface Props {
     match: Match
 }
 
-export default observer(function MatchButton({match}: Props) {
-    const { userStore: { getRoles, getLoggedUser },modalStore, matchStore: {deleteMatch} } = useStore();
+export default observer(function MatchButton({ match }: Props) {
+    const { userStore: { getRoles, getLoggedUser }, modalStore, matchStore: { deleteMatch } } = useStore();
 
     const decodedRole = getRoles();
     const decodedUserId = getLoggedUser();
-    if (decodedRole?.includes("admin") ) {
+    if (decodedRole?.includes("admin")) {
 
         return (
             <Button.Group>
-                <Button  primary onClick={() => modalStore.openModal(<MatchForm id={match.id} />)} content='Edytuj'/>
-                <Button color='red' onClick={() => deleteMatch(match.id)} content='Usuń'/>
+                <Button primary onClick={() => modalStore.openModal(<MatchForm id={match.id} />)} content='Edytuj' />
+                <Button color='red' onClick={() => deleteMatch(match.id)} content='Usuń' />
             </Button.Group>
-            )
-        }
-        return (
-                <Button  primary onClick={() => modalStore.openModal(
-                    <BetForm 
-                        matchId = {match.id}
-                        matchBetId={match.matchBets.find(u => {
-                        return u.appUserId === decodedUserId })?.id} />
-                        )} content='Wytypuj wynik'
-                        />
-            )
+        )
+    }
+    return (
+        <Button primary content='Wytypuj wynik'
+            onClick={() => modalStore.openModal(
+                <BetForm
+                    matchId={match.id}
+                    matchBetId={match.matchBets.find(u => {
+                        return u.appUserId === decodedUserId
+                    })?.id}
+                />)}
+        />)
 })

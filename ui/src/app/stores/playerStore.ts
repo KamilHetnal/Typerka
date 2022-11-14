@@ -3,7 +3,6 @@ import agent from '../api/agent';
 import { Player, PlayerFormValues } from '../models/Player';
 
 export default class PlayerStore {
-  players: Player[] = [];
   playerRegistry = new Map<string, Player>();
   player: Player | undefined = undefined;
   loading = false;
@@ -15,13 +14,13 @@ export default class PlayerStore {
 
   sortingArr = ['Bramkarz', 'Obrońca', 'Pomocnik', 'Napastnik']
   
-  get playersOnPosition() {
+  get players() {
     return Array.from(this.playerRegistry.values()).sort((a, b) => this.sortingArr.indexOf(a.position) - this.sortingArr.indexOf(b.position))
   }
 
   get groupedPlayers() {
     return Object.entries(
-      this.playersOnPosition.reduce((players, player) => {
+      this.players.reduce((players, player) => {
         players[player.position] = players[player.position]
           ? [...players[player.position], player].sort((a,b) => a.name.localeCompare(b.name))
           : [player]

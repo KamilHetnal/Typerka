@@ -3,7 +3,6 @@ import agent from '../api/agent';
 import { Bet, BetFormValues } from '../models/Bet';
 
 export default class BetStore {
-  bets: Bet[] = [];
   betRegistry = new Map<string, Bet>();
   bet: Bet | undefined = undefined;
   loading = false;
@@ -12,10 +11,22 @@ export default class BetStore {
   constructor() {
     makeAutoObservable(this);
   }
-//   get betsByDate() {
-//     return Array.from(this.betRegistry.values()).sort((a,b) => 
-//         a.betDate.getTime()- b.betDate.getTime())
-//   }
+
+  get bets() {
+    return Array.from(this.betRegistry.values())
+    .sort((a,b) => a.appUserId.localeCompare(b.appUserId))
+  }
+
+  get betsUsers() {
+    return Object.entries(
+      this.bets.reduce((bets, bet) => {
+        bets[bet.appUserId] = bets[bet.appUserId]
+          ? [...bets[bet.appUserId], bet]
+          : [bet];
+        return bets;
+      }, {} as { [key: string]: Bet[] })
+    );
+  }
 
   loadBets = async () => {
     this.setLoadingInitial(true);
