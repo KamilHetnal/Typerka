@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Grid, Item, } from 'semantic-ui-react'
 import { Match } from '../../../app/models/Match'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { NavLink } from 'react-router-dom'
 import { useStore } from '../../../app/stores/store'
 import { Bet } from '../../../app/models/Bet'
@@ -28,9 +28,8 @@ export default function MatchListitem({ match }: Props) {
     const matchBetId = match.matchBets.filter(m => m?.match?.id !== match.id).find(u => u.appUserId === decodedUserId)?.id
 
     useEffect(() => {
-        console.log(matchBetId)
-        if (matchBetId) 
-        loadBet(matchBetId).then(matchBet => setMatchBet(new Bet(matchBet)))
+        if (matchBetId)
+            loadBet(matchBetId).then(matchBet => setMatchBet(new Bet(matchBet)))
     }, [matchBetId, loadBet, setMatchBet, match.matchBets.length])
 
     return (
@@ -38,11 +37,19 @@ export default function MatchListitem({ match }: Props) {
             <Grid.Row>
                 <Grid.Column width={8}>
                     <Item as={NavLink} to={`/matches/${match.id}`}>
-                        {format(match.matchDate, 'dd-MM: H:mm')}
+                        {match.matchDate instanceof Date ?
+                            <>
+                                {format(match.matchDate, 'dd-MM: H:mm')}
+                            </>
+                            :
+                            <>
+                                {format(parseISO(match.matchDate), 'dd-MM: H:mm')}
+                            </>
+                        }
                     </Item>
                 </Grid.Column>
                 <Grid.Column width={8}>
-                    <MatchButton match={match} />
+                    <MatchButton matchId={match.id} matchBetId={matchBetId} />
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row >

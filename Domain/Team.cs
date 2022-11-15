@@ -11,6 +11,9 @@ namespace Domain
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Group { get; set; }
+        public string Info { get; set; }
+        public string BestResult { get; set; }
+        public string BestResultDates { get; set; }
         public int MatchesPlayed { get; set; }
         public int Wins { get; set; } 
         public int Losses { get; set; }

@@ -18,8 +18,8 @@ export default function TeamListItem({ team, index }: Props) {
                         textAlign='center'
                         style={{
                             backgroundColor: 'white',
-                            borderBottomRightRadius: 20,
-                            borderBottomLeftRadius: 20
+                            borderBottomRightRadius: 5,
+                            borderBottomLeftRadius: 5
                         }} >
                         <ComputerItem team={team} index={index} />
                     </Grid.Row>
@@ -28,8 +28,8 @@ export default function TeamListItem({ team, index }: Props) {
                         textAlign='center'
                         style={{
                             backgroundColor: 'white',
-                            borderBottomRightRadius: 20,
-                            borderBottomLeftRadius: 20
+                            borderBottomRightRadius: 5,
+                            borderBottomLeftRadius: 5
                         }} >
                         <MobileItem team={team} index={index} />
                     </Grid.Row>

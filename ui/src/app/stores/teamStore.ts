@@ -13,20 +13,28 @@ export default class TeamStore {
   }
 
   get teams() {
-    return Array.from(this.teamRegistry.values())
-      .sort((a,b) => a.group?.localeCompare(b.group))
-      .sort((b,a) => a.points - b.points)
-      .sort((b,a) => (a.goalsScored - a.goalsConceded) - (b.goalsScored - b.goalsConceded))
+    return Array.from(this.teamRegistry.values()).sort((a, b) =>
+      a.group?.localeCompare(b.group)
+    );
   }
 
   get groupedTeams() {
     return Object.entries(
       this.teams.reduce((teams, team) => {
         teams[team.group] = teams[team.group]
-          ? [...teams[team.group], team]
-          : [team]
-          return teams
-      }, {} as { [key: string]: Team[]})
+          ? [...teams[team.group], team].sort((b, a) =>
+              a.points === b.points
+                ? a.goalsScored - a.goalsConceded ===
+                  b.goalsScored - b.goalsConceded
+                  ? a.goalsScored - b.goalsScored
+                  : a.goalsScored -
+                    a.goalsConceded -
+                    (b.goalsScored - b.goalsConceded)
+                : a.points - b.points
+            )
+          : [team];
+        return teams;
+      }, {} as { [key: string]: Team[] })
     );
   }
 
@@ -35,7 +43,7 @@ export default class TeamStore {
     try {
       const teams = await agent.Teams.list();
       teams.forEach((team) => {
-        this.setTeam(team)
+        this.setTeam(team);
       });
       this.setLoadingInitial(false);
     } catch (error) {
@@ -50,34 +58,36 @@ export default class TeamStore {
       this.team = team;
       return team;
     } else {
-      this.setLoadingInitial(true)
+      this.setLoadingInitial(true);
       try {
         const team = await agent.Teams.details(id);
         runInAction(() => {
-          this.team = team; 
+          this.team = team;
           this.setTeam(team);
-        })
+        });
         this.setLoadingInitial(false);
       } catch (error) {
-        console.log(error)
-        runInAction(() => { this.setLoadingInitial(false) })
+        console.log(error);
+        runInAction(() => {
+          this.setLoadingInitial(false);
+        });
       }
     }
-  }
+  };
 
   private setTeam = (team: Team) => {
     return this.teamRegistry.set(team.id, team);
-  }
+  };
 
   private getTeam = (id: string) => {
     return this.teamRegistry.get(id);
-  }
+  };
 
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   };
 
-  updateTeam =async (team:TeamFormValues) => {
+  updateTeam = async (team: TeamFormValues) => {
     try {
       await agent.Teams.update(team);
       runInAction(() => {
@@ -90,11 +100,11 @@ export default class TeamStore {
           this.team = updatedTeam as Team;
         }
       });
-    }catch (error) {
-        console.log(error);
-        runInAction(() => {
-            this.loading = false;
-        })
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loading = false;
+      });
     }
-  }
+  };
 }

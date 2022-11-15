@@ -8,6 +8,7 @@ export interface Profile {
     userName: string;
     displayName: string;
     email: string;
+    phoneNumber: string;
     image?: string;
     bio?: string;
     points: number;

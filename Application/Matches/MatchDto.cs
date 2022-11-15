@@ -11,8 +11,8 @@ namespace Application.Matches
     public class MatchDto
     {
         public Guid Id { get; set; }
-        public TeamDto HomeTeam { get; set; }
-        public TeamDto AwayTeam { get; set; }
+        public TeamForMatchDto HomeTeam { get; set; }
+        public TeamForMatchDto AwayTeam { get; set; }
         public DateTime MatchDate { get; set; }
         public int HomeGoals { get; set; }
         public int AwayGoals { get; set; }

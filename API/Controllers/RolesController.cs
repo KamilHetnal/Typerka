@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [Authorize(Policy = "ReqAdminRole")]
+    //[Authorize(Policy = "ReqAdminRole")]
     public class RolesController : BaseApiController
     {
         [HttpGet]

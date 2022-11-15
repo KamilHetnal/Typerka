@@ -20,20 +20,20 @@ const sleep = (delay: number) => {
   });
 };
 
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-axios.defaults.baseURL = 'http://localhost:5000/api/';
-
-axios.interceptors.request.use(config => {
+axios.interceptors.request.use((config) => {
   const token = store.commonStore.token;
-  if (token) config.headers!.Authorization = `Bearer ${token}`
+  if (token) config.headers!.Authorization = `Bearer ${token}`;
   return config;
-})
+});
 
 axios.interceptors.response.use(
   async (response) => {
-    await sleep(250);
+    if (process.env.NODE_ENV === 'development') await sleep(250);
     return response;
   },
+
   (error: AxiosError) => {
     const { data, status, config } = error.response!;
     switch (status) {
@@ -90,20 +90,23 @@ const Account = {
 const Championships = {
   list: () => requests.get<Championship[]>('championships'),
   details: (id: string) => requests.get<Championship>(`championships/${id}`),
-  update: (championship: ChampionshipFormValue) => requests.put<void>(`championships/${championship.id}`, championship),
+  update: (championship: ChampionshipFormValue) =>
+    requests.put<void>(`championships/${championship.id}`, championship),
 };
 
 const Teams = {
   list: () => requests.get<Team[]>('teams'),
   details: (id: string) => requests.get<Team>(`teams/${id}`),
-  update: (team: TeamFormValues) => requests.put<void>(`teams/${team.id}`, team),
+  update: (team: TeamFormValues) =>
+    requests.put<void>(`teams/${team.id}`, team),
 };
 
 const Players = {
   list: () => requests.get<Player[]>('players'),
   listInTeam: (id: string) => requests.get<Player[]>(`players/team/${id}`),
   details: (id: string) => requests.get<Player>(`players/${id}`),
-  update: (player: PlayerFormValues) => requests.put<void>(`players/${player.id}`, player),
+  update: (player: PlayerFormValues) =>
+    requests.put<void>(`players/${player.id}`, player),
 };
 
 const Matches = {
@@ -111,7 +114,8 @@ const Matches = {
   listForTeam: (id: string) => requests.get<Match[]>(`matches/team/${id}`),
   details: (id: string) => requests.get<Match>(`matches/${id}`),
   create: (match: MatchFormValues) => requests.post<void>(`/matches/`, match),
-  update: (match: MatchFormValues) => requests.put<void>(`matches/${match.id}`, match),
+  update: (match: MatchFormValues) =>
+    requests.put<void>(`matches/${match.id}`, match),
   delete: (id: string) => requests.del<void>(`/matches/${id}`),
 };
 
@@ -126,16 +130,20 @@ const Bets = {
 const TopScorerBets = {
   list: () => requests.get<TopScorerBet[]>('top-scorer-bets'),
   details: (id: string) => requests.get<TopScorerBet>(`top-scorer-bets/${id}`),
-  create: (bet: TopScorerBetFormValues) => requests.post<void>(`top-scorer-bets/`, bet),
-  update: (bet: TopScorerBetFormValues) => requests.put<void>(`top-scorer-bets/${bet.id}`, bet),
+  create: (bet: TopScorerBetFormValues) =>
+    requests.post<void>(`top-scorer-bets/`, bet),
+  update: (bet: TopScorerBetFormValues) =>
+    requests.put<void>(`top-scorer-bets/${bet.id}`, bet),
   delete: (id: string) => requests.del<void>(`top-scorer-bets/${id}`),
 };
 
 const ChampionBets = {
   list: () => requests.get<ChampionBet[]>('champion-bets'),
   details: (id: string) => requests.get<ChampionBet>(`champion-bets/${id}`),
-  create: (bet: ChampionBetFormValues) => requests.post<void>(`champion-bets/`, bet),
-  update: (bet: ChampionBetFormValues) => requests.put<void>(`champion-bets/${bet.id}`, bet),
+  create: (bet: ChampionBetFormValues) =>
+    requests.post<void>(`champion-bets/`, bet),
+  update: (bet: ChampionBetFormValues) =>
+    requests.put<void>(`champion-bets/${bet.id}`, bet),
   delete: (id: string) => requests.del<void>(`champion-bets/${id}`),
 };
 
@@ -159,18 +167,13 @@ const Roles = {
   userRoleList: () => requests.get<UserRole[]>('/roles/userroles'),
   details: (id: string) => requests.get<Role>(`/roles/${id}`),
   create: (role: RoleFormValues) => requests.post<void>(`/roles/`, role),
-  update: (role: RoleFormValues) => requests.put<void>(`/roles/${role.id}`, role),
+  update: (role: RoleFormValues) =>
+    requests.put<void>(`/roles/${role.id}`, role),
   delete: (id: string) => requests.del<void>(`/roles/${id}`),
   addToRole: (roleName: string, userName: string) =>
-  requests.post<void>(
-    `/roles/${roleName}/${userName}/addtorole`,
-    {}
-  ),
+    requests.post<void>(`/roles/${roleName}/${userName}/addtorole`, {}),
   removeFromRole: (roleName: string, userName: string) =>
-  requests.post<void>(
-    `/roles/${roleName}/${userName}/removefromrole`,
-    {}
-  ),  
+    requests.post<void>(`/roles/${roleName}/${userName}/removefromrole`, {}),
 };
 
 const agent = {
@@ -183,7 +186,7 @@ const agent = {
   ChampionBets,
   TopScorerBets,
   Profiles,
-  Roles
+  Roles,
 };
 
 export default agent;

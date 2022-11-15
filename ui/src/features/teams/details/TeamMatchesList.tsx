@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react'
 import { Segment } from 'semantic-ui-react';
 import { Match } from '../../../app/models/Match';
@@ -7,13 +8,14 @@ interface Props {
   matches: Match[]
 }
 
-export default function TeamMatchesList({matches}: Props) {
+export default observer(function TeamMatchesList({ matches }: Props) {
 
   return (
     <Segment>
       {matches.map((match) => (
         <MatchListitem key={match.id} match={match} />
       ))}
+
     </Segment>
   )
-}
+})

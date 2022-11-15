@@ -20,8 +20,8 @@ export default observer(function TeamForm({id}: Props) {
   const [team, setTeam] = useState<TeamFormValues>(new TeamFormValues());
 
   const validationSchema = Yup.object({
-      name: Yup.string().required('Podanie daty jest wymagane'),
-      group: Yup.string().required('Podanie daty jest wymagane')
+      name: Yup.string().required('Podanie nazwy jest wymagane'),
+      group: Yup.string().required('Podanie grupy jest wymagane')
   })
 
   useEffect(() => {

@@ -12,7 +12,7 @@ export default observer(function UpcomingMatchesList() {
     useEffect(() => {
         if(matches.length <= 1)
         loadMatches()
-      }, [loadMatches])
+      }, [matches.length, loadMatches])
     const upcomingMatches = matches.filter(m => m.matchDate >= new Date()).slice(0, 5)
 
     const itemStyle = {

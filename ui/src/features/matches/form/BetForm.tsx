@@ -5,11 +5,9 @@ import { v4 as uuid } from 'uuid';
 import { Formik, Form } from "formik";
 import { BetFormValues } from '../../../app/models/Bet';
 import MyNumberInput from '../../../app/common/form/MyNumberInput';
-import { Button, Label } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { Match } from '../../../app/models/Match';
 import * as Yup from 'yup';
-import MatchListitem from '../dashboard/MatchListitem';
-import { useHistory } from 'react-router-dom';
 
 interface Props {
   matchBetId?: string
@@ -17,11 +15,10 @@ interface Props {
 }
 
 export default observer(function BetForm({ matchBetId, matchId }: Props) {
-  const history = useHistory();
   const { betStore, modalStore, matchStore } = useStore();
 
   const { loadBet, createBet, updateBet } = betStore;
-  const { loadMatch , setLoadingInitial } = matchStore;
+  const { loadMatch } = matchStore;
 
   const [bet, setBet] = useState<BetFormValues>(new BetFormValues());
   const [match, setMatch] = useState<Match>(new Match());
@@ -63,7 +60,7 @@ export default observer(function BetForm({ matchBetId, matchId }: Props) {
   }
   return (
     <div>
-      <h1>Te detale...</h1>
+      <h1>Wytypuj wynik</h1>
       <Formik
         validationSchema={validationSchema}
         enableReinitialize initialValues={bet}

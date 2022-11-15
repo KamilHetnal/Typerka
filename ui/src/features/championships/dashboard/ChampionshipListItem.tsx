@@ -14,7 +14,7 @@ export default observer(function ChampionshipListItem() {
   const { championshipStore, modalStore: { openModal }, userStore: { getRoles } } = useStore();
   const { championshipsByCountry } = championshipStore
 
-  const startDate = new Date(2022, 11, 20, 16)
+  const startDate = new Date(2022, 10, 20, 17)
   const decodedRole = getRoles();
 
   const style = {
@@ -33,12 +33,12 @@ export default observer(function ChampionshipListItem() {
             {decodedRole?.includes('admin') ?
               <>
                 <Button.Group fluid>
-                  <Button 
+                  <Button
                     content='Ustaw Zwycięzcę Turnieju'
                     primary
                     onClick={() => openModal(<ChampionshipForm id={champ.id} />)} />
                   <Button.Or text='lub' />
-                  <Button 
+                  <Button
                     content='Ustaw Króla Strzelców'
                     primary
                     onClick={() => openModal(<ChampionshipForm id={champ.id} />)} />
@@ -48,11 +48,11 @@ export default observer(function ChampionshipListItem() {
               <Grid columns={2}>
                 <Grid.Column width={8}>
                   <Header size='large' content='Zwycięzca turnieju' />
-                  <ChampionDetails winnerId={champ.winnerId} />
+                  <ChampionDetails winnerId={champ.winnerId ? champ.winnerId : ''} />
                 </Grid.Column>
                 <Grid.Column width={8}>
                   <Header size='large' content='Król strzelców' />
-                  <TopScorerDetails topScorerId={champ.topScorerId} />
+                  <TopScorerDetails topScorerId={champ.topScorerId ? champ.topScorerId : ''} />
                 </Grid.Column>
               </Grid>
             }

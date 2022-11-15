@@ -1,9 +1,13 @@
+import { Match } from "./Match";
 import { Player } from "./Player";
 
 export interface Team {
   id: string;
   name: string;
   group: string;
+  info: string;
+  bestResult: string;
+  bestResultDates: string;
   matchesPlayed: number;
   wins: number;
   losses: number;

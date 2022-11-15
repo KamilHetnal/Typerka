@@ -9,7 +9,7 @@ interface Props {
 export default function MatchDetailsHeader({ matchDate }: Props) {
 
   return (
-    <Segment textAlign='center' color='teal' >
+    <Segment textAlign='center' color='blue' >
       <Header as='h1' content={matchDate instanceof Date ?
         <>
           {format(matchDate, 'dd-MM-yyyy: HH:mm')}

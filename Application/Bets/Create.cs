@@ -33,11 +33,13 @@ namespace Application.Bets
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var bets = await _context.Bets.Include(u => u.AppUser).Include(m => m.Match).ToArrayAsync();
+
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
 
                 var match = await _context.Matches.FirstOrDefaultAsync(x => x.Id == request.Bet.Match.Id);
 
-                var bet= new Bet
+                var bet = new Bet
                 {
                     AppUser = user,
                     Match = request.Bet.Match,
@@ -46,9 +48,17 @@ namespace Application.Bets
                     BetDate = DateTime.Now
                 };
 
+                foreach (var item in bets)
+                {
+                    if (item.AppUser.Id == user.Id && item.Match.Id == match.Id)
+                    {
+                        return Result<Unit>.Failure("Mecz jest już obstawiony. Odśwież stronę, aby edytować swoje obstawienie");
+                    }
+                }
+
                 request.Bet = bet;
 
-                if(DateTime.Now >= match.MatchDate)
+                if (DateTime.Now >= match.MatchDate)
                     return Result<Unit>.Failure("Mecz już się zaczął, nie można dodać obstawienia");
 
                 match.MatchBets.Add(bet);
@@ -56,7 +66,7 @@ namespace Application.Bets
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if(!result) return Result<Unit>.Failure("Zgłoszenie wyniku nie powiodło się");
+                if (!result) return Result<Unit>.Failure("Zgłoszenie wyniku nie powiodło się");
 
                 return Result<Unit>.Success(Unit.Value);
             }

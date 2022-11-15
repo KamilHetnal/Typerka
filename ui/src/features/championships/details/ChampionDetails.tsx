@@ -5,7 +5,7 @@ import { useStore } from '../../../app/stores/store'
 import TeamInfo from '../../teams/details/TeamInfo'
 
 interface Props {
-    winnerId: string
+    winnerId?: string
 }
 
 export default observer(function ChampionDetails({ winnerId }: Props) {
@@ -13,13 +13,14 @@ export default observer(function ChampionDetails({ winnerId }: Props) {
     const { team, loadTeam } = teamStore
 
     useEffect(() => {
-        if (winnerId) loadTeam(winnerId)
+        if (winnerId) 
+        loadTeam(winnerId!)
     }, [winnerId, loadTeam])
 
     return (
         <Grid>
             <Grid.Row >
-                {team ?
+                {winnerId && team ?
                     <>
                         <TeamInfo team={team} />
                     </>

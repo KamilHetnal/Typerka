@@ -4,7 +4,7 @@ import { Grid, Header } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 
 interface Props {
-    topScorerId: string
+    topScorerId?: string
 }
 
 export default observer(function TopScorerDetails({ topScorerId }: Props) {

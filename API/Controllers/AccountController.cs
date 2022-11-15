@@ -59,7 +59,8 @@ namespace API.Controllers
             {
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
-                UserName = registerDto.UserName
+                UserName = registerDto.UserName,
+                PhoneNumber = registerDto.PhoneNumber
             };
 
             var userRoles = await _userManager.GetRolesAsync(user);

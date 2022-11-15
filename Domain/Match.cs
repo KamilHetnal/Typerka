@@ -8,6 +8,8 @@ namespace Domain
     public class Match
     {
         public Guid Id { get; set; }
+        public Guid HomeTeamId { get; set; }
+        public Guid AwayTeamId { get; set; }
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }
         public DateTime MatchDate { get; set; }

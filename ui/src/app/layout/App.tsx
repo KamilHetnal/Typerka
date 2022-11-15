@@ -9,7 +9,6 @@ import TestErrors from '../../features/errors/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
-import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import ModalContainer from '../common/modals/modalContainer';
 import ProfileDashboard from '../../features/profiles/dashboard/ProfileDashboard';
@@ -57,7 +56,6 @@ function App() {
           <Route exact path={'/champion-bets'} component={ChampionBetsDashboard} />
 
           <Route exact path={'/statute'} component={StatutePage} />
-          <Route exact path={'/login'} component={LoginForm} />
           <Route exact path={'/users'} component={ProfileDashboard} />
           <Route path={'/teams/:id'} component={TeamDetails} />
           <Route path='/profiles/:userName' component={ProfilePage} />

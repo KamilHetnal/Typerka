@@ -20,7 +20,8 @@ export default observer(function RegisterForm() {
                 username: Yup.string().required(),
                 email: Yup.string().required().email(),
                 password: Yup.string().required(),
-                registerPassword: Yup.string().required()
+                registerPassword: Yup.string().required(),
+                phoneNumber: Yup.string()
             })}
         >
             {({handleSubmit, isSubmitting, errors, isValid, dirty}) => (
@@ -29,11 +30,12 @@ export default observer(function RegisterForm() {
                     <MyTextInput name='displayName' placeholder='Login'/>
                     <MyTextInput name='username' placeholder='Imię'/>
                     <MyTextInput name='email' placeholder='Email'/>
+                    <MyTextInput name='phoneNumber' placeholder='Numer Telefonu' type='tel'/>
                     <MyTextInput name='password' placeholder='Hasło' type='password'/>
                     <MyTextInput name='registerPassword' placeholder='Hasło Rejestracyjne' type='password'/>
                     <ErrorMessage name="error" render={() => 
                         <ValidationErrors errors={errors.error}/>}/>
-                    <Button disabled={!isValid || !dirty || isSubmitting} 
+                    <Button disabled={!isValid || !dirty || isSubmitting}
                         loading={isSubmitting} positive content='Wyślij' type='submit' fluid />                  
                 </Form>
             )}

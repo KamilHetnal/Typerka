@@ -26,8 +26,8 @@ export default observer(function TopScorerBetsDashboard() {
 
     topScorerBetRegistry.forEach(element => {
         runInAction(() => {
-          element.topScorerId = (players.find(p => p.id == element.topScorerId)) ?
-            players?.find(p => p.id == element.topScorerId)?.name! :
+          element.topScorerId = (players.find(p => p.id === element.topScorerId)) ?
+            players?.find(p => p.id === element.topScorerId)?.name! :
             element.topScorerId;
           element.appUserId = (profiles?.find(p => p.id === element.appUserId)?.displayName)
             ?

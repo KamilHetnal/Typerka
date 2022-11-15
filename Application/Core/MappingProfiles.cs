@@ -27,8 +27,8 @@ namespace Application.Core
             CreateMap<Player, PlayerDto>();
 
             CreateMap<Match, Match>()
-                .ForMember(t => t.HomeTeam, m => m.MapFrom(s => s.HomeTeam))
-                .ForMember(d => d.MatchBets, d => d.MapFrom(d => d.MatchBets));
+                .ForMember(d=> d.HomeTeam, d => d.MapFrom(d => d.HomeTeam))
+                .ForMember(d=> d.AwayTeam, d => d.MapFrom(d => d.AwayTeam));
             CreateMap<Match, MatchDto>()
                 .ForMember(d => d.MatchBets, d => d.MapFrom(d => d.MatchBets));
 

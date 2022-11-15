@@ -40,11 +40,23 @@ namespace Application.Matches
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                
-                var match = await _context.Matches.FindAsync(request.Match.Id);
 
+                var match = await _context.Matches.FindAsync(request.Match.Id);
+ 
                 if (match == null)
                     return null;
+
+                var homeTeam = await _context.Teams.FirstOrDefaultAsync(h => h.Id == request.Match.HomeTeamId);
+                var awayTeam = await _context.Teams.FirstOrDefaultAsync(h => h.Id == request.Match.AwayTeamId);
+
+                if ((homeTeam) == null)
+                    return null;
+
+                if ((awayTeam) == null)
+                    return null;
+
+                request.Match.HomeTeam = homeTeam;
+                request.Match.AwayTeam = awayTeam;
 
                 _mapper.Map(request.Match, match);
 

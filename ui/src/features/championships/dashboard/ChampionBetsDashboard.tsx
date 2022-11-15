@@ -28,8 +28,8 @@ export default observer(function ChampionBetsDashboard() {
 
   championBetRegistry.forEach(element => {
     runInAction(() => {
-      element.championId = (teams.find(t => t.id == element.championId)) ?
-        teams?.find(t => t.id == element.championId)?.name! :
+      element.championId = (teams.find(t => t.id === element.championId)) ?
+        teams?.find(t => t.id === element.championId)?.name! :
         element.championId;
       element.appUserId = (profiles?.find(t => t.id === element.appUserId)?.displayName)
         ?

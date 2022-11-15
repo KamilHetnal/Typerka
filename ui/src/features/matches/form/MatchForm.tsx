@@ -74,21 +74,21 @@ export default observer(function MatchForm({ id }: Props) {
             <MyNumberInput placeholder='Gole Gościa' name='awayGoals' />
             <MySelectInput
               placeholder="Gospodarz"
-              name='homeTeam'
+              name='homeTeamId'
               options={teams.map(t => ({
                 "key": `h${t.id}`,
                 "text": t.name,
-                "value": t
+                "value": t.id
               }
               ))}
             />
             <MySelectInput
               placeholder="Gość"
-              name='awayTeam'
+              name='awayTeamId'
               options={teams.map(t => ({
                 "key": `a${t.id}`,
                 "text": t.name,
-                "value": t
+                "value": t.id
               }
               ))}
             />

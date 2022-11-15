@@ -15,7 +15,6 @@ interface Props {
 export default observer(function BetWinnerForm({ bet, match }: Props) {
     const { betStore, modalStore } = useStore();
     const { updateBet } = betStore;
-    console.log(bet);
 
     const winnerOptions = [
         { key: 'ht', value: match.homeTeam, text: match.homeTeam?.name },

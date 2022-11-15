@@ -1,26 +1,13 @@
-import { observer } from 'mobx-react-lite'
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React from 'react'
 import { Grid, Header, Segment } from 'semantic-ui-react'
-import { useStore } from '../../../app/stores/store'
+import { Player } from '../../../app/models/Player'
 import PlayersList from './players/PlayersList'
 
+interface Props {
+  players: Player[]
+}
 
-export default observer(function TeamPlayersList() {
-  const { playerStore } = useStore()
-  const { playerRegistry, loadPlayers, groupedPlayers } = playerStore
-  const { id } = useParams<{ id: string }>();
-
-  useEffect(() => {
-    if (id || playerRegistry.size >= 1) {
-      loadPlayers()
-    }
-  }, [id, playerRegistry.size, loadPlayers])
-
-  groupedPlayers.forEach(players => {
-    players[1] = players[1].filter(p => p.teamId === id)
-  })
-
+export default function TeamPlayersList({players}: Props) {
   return (
     <Segment.Group>
       <Segment>
@@ -31,7 +18,7 @@ export default observer(function TeamPlayersList() {
           </Grid>
         </Header>
       </Segment>
-      <PlayersList />
+      <PlayersList players={players} />
     </Segment.Group>
   )
-})
+}

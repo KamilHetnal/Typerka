@@ -7,6 +7,7 @@ using Application.Core;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Matches
@@ -36,7 +37,19 @@ namespace Application.Matches
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                _context.Matches.Add(request.Match);
+                var homeTeam = await _context.Teams.FirstOrDefaultAsync(x => x.Id == request.Match.HomeTeamId);
+                var awayTeam = await _context.Teams.FirstOrDefaultAsync(x => x.Id == request.Match.AwayTeamId);
+
+                var match = new Match
+                {
+                    HomeTeam = homeTeam,
+                    HomeTeamId = homeTeam.Id,
+                    AwayTeam = awayTeam,
+                    AwayTeamId = awayTeam.Id,
+                    MatchDate = request.Match.MatchDate
+                };
+ 
+                _context.Matches.Add(match);
 
                 var result = await _context.SaveChangesAsync() > 0;
 

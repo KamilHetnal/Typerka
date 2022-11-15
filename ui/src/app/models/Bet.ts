@@ -6,6 +6,7 @@ export interface Bet {
     awayScore: number
     match: MatchDto
     appUserId: string
+    appUserName?: string
     betPoints: number
   }
 

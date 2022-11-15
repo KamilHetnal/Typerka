@@ -18,8 +18,8 @@ export default observer(function TeamList() {
                         color='blue'
                         style={{
                             marginTop: '15px',
-                            borderTopRightRadius: 20,
-                            borderTopLeftRadius: 20
+                            borderTopRightRadius: 5,
+                            borderTopLeftRadius: 5
                         }}
                     >
                         <Grid.Column width={5} > Grupa {group}</Grid.Column>
@@ -35,8 +35,8 @@ export default observer(function TeamList() {
                         color='blue'
                         style={{
                             marginTop: '15px',
-                            borderTopRightRadius: 20,
-                            borderTopLeftRadius: 20
+                            borderTopRightRadius: 5,
+                            borderTopLeftRadius: 5
                         }}
                     >
                         <Grid.Column width={8} > Grupa {group}</Grid.Column>
