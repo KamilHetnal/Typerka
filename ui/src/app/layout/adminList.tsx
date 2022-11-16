@@ -8,7 +8,7 @@ export default function AdminList() {
 
     const decodedRole = getRoles();
 
-     if (!decodedRole?.includes("admin")) {
+     if (decodedRole?.includes("admin")) {
         return (
             <Menu.Item>
             <Dropdown pointing='top left' text="Panel Admina">

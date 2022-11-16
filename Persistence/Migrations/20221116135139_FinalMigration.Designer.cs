@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221115172104_MatchEdit")]
-    partial class MatchEdit
+    [Migration("20221116135139_FinalMigration")]
+    partial class FinalMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -187,13 +187,13 @@ namespace Persistence.Migrations
                     b.Property<int>("AwayGoals")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("AwayTeamId")
+                    b.Property<Guid>("AwayTeamId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("HomeGoals")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("HomeTeamId")
+                    b.Property<Guid>("HomeTeamId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("MatchDate")
@@ -498,11 +498,15 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Team", "AwayTeam")
                         .WithMany()
-                        .HasForeignKey("AwayTeamId");
+                        .HasForeignKey("AwayTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Team", "HomeTeam")
                         .WithMany()
-                        .HasForeignKey("HomeTeamId");
+                        .HasForeignKey("HomeTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AwayTeam");
 
