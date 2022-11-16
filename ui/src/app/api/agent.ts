@@ -88,63 +88,63 @@ const Account = {
 };
 
 const Championships = {
-  list: () => requests.get<Championship[]>('championships'),
-  details: (id: string) => requests.get<Championship>(`championships/${id}`),
+  list: () => requests.get<Championship[]>('/championships'),
+  details: (id: string) => requests.get<Championship>(`/championships/${id}`),
   update: (championship: ChampionshipFormValue) =>
-    requests.put<void>(`championships/${championship.id}`, championship),
+    requests.put<void>(`/championships/${championship.id}`, championship),
 };
 
 const Teams = {
-  list: () => requests.get<Team[]>('teams'),
-  details: (id: string) => requests.get<Team>(`teams/${id}`),
+  list: () => requests.get<Team[]>('/teams'),
+  details: (id: string) => requests.get<Team>(`/teams/${id}`),
   update: (team: TeamFormValues) =>
-    requests.put<void>(`teams/${team.id}`, team),
+    requests.put<void>(`/teams/${team.id}`, team),
 };
 
 const Players = {
-  list: () => requests.get<Player[]>('players'),
-  listInTeam: (id: string) => requests.get<Player[]>(`players/team/${id}`),
-  details: (id: string) => requests.get<Player>(`players/${id}`),
+  list: () => requests.get<Player[]>('/players'),
+  listInTeam: (id: string) => requests.get<Player[]>(`/players/team/${id}`),
+  details: (id: string) => requests.get<Player>(`/players/${id}`),
   update: (player: PlayerFormValues) =>
-    requests.put<void>(`players/${player.id}`, player),
+    requests.put<void>(`/players/${player.id}`, player),
 };
 
 const Matches = {
-  list: () => requests.get<Match[]>('matches'),
-  listForTeam: (id: string) => requests.get<Match[]>(`matches/team/${id}`),
-  details: (id: string) => requests.get<Match>(`matches/${id}`),
+  list: () => requests.get<Match[]>('/matches'),
+  listForTeam: (id: string) => requests.get<Match[]>(`/matches/team/${id}`),
+  details: (id: string) => requests.get<Match>(`/matches/${id}`),
   create: (match: MatchFormValues) => requests.post<void>(`/matches/`, match),
   update: (match: MatchFormValues) =>
-    requests.put<void>(`matches/${match.id}`, match),
+    requests.put<void>(`/matches/${match.id}`, match),
   delete: (id: string) => requests.del<void>(`/matches/${id}`),
 };
 
 const Bets = {
-  list: () => requests.get<Bet[]>('bets'),
-  details: (id: string) => requests.get<Bet>(`bets/${id}`),
-  create: (bet: BetFormValues) => requests.post<void>(`bets/`, bet),
-  update: (bet: BetFormValues) => requests.put<void>(`bets/${bet.id}`, bet),
-  delete: (id: string) => requests.del<void>(`bets/${id}`),
+  list: () => requests.get<Bet[]>('/bets'),
+  details: (id: string) => requests.get<Bet>(`/bets/${id}`),
+  create: (bet: BetFormValues) => requests.post<void>(`/bets/`, bet),
+  update: (bet: BetFormValues) => requests.put<void>(`/bets/${bet.id}`, bet),
+  delete: (id: string) => requests.del<void>(`/bets/${id}`),
 };
 
 const TopScorerBets = {
-  list: () => requests.get<TopScorerBet[]>('top-scorer-bets'),
-  details: (id: string) => requests.get<TopScorerBet>(`top-scorer-bets/${id}`),
+  list: () => requests.get<TopScorerBet[]>('/top-scorer-bets'),
+  details: (id: string) => requests.get<TopScorerBet>(`/top-scorer-bets/${id}`),
   create: (bet: TopScorerBetFormValues) =>
-    requests.post<void>(`top-scorer-bets/`, bet),
+    requests.post<void>(`/top-scorer-bets/`, bet),
   update: (bet: TopScorerBetFormValues) =>
-    requests.put<void>(`top-scorer-bets/${bet.id}`, bet),
-  delete: (id: string) => requests.del<void>(`top-scorer-bets/${id}`),
+    requests.put<void>(`/top-scorer-bets/${bet.id}`, bet),
+  delete: (id: string) => requests.del<void>(`/top-scorer-bets/${id}`),
 };
 
 const ChampionBets = {
-  list: () => requests.get<ChampionBet[]>('champion-bets'),
-  details: (id: string) => requests.get<ChampionBet>(`champion-bets/${id}`),
+  list: () => requests.get<ChampionBet[]>('/champion-bets'),
+  details: (id: string) => requests.get<ChampionBet>(`/champion-bets/${id}`),
   create: (bet: ChampionBetFormValues) =>
-    requests.post<void>(`champion-bets/`, bet),
+    requests.post<void>(`/champion-bets/`, bet),
   update: (bet: ChampionBetFormValues) =>
-    requests.put<void>(`champion-bets/${bet.id}`, bet),
-  delete: (id: string) => requests.del<void>(`champion-bets/${id}`),
+    requests.put<void>(`/champion-bets/${bet.id}`, bet),
+  delete: (id: string) => requests.del<void>(`/champion-bets/${id}`),
 };
 
 const Profiles = {
