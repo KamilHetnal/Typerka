@@ -1,51 +1,59 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Domain;
+using Application.Matches;
+var builder = WebApplication.CreateBuilder(args);
 
-namespace API
+builder.Services.AddControllers(options =>
 {
-    public class Program
-    {
-        public static async Task Main(string[] args)
-        {
-            var host = CreateHostBuilder(args).Build();
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+// builder.Services.AddControllers().AddFluentValidation(config =>
+// {
+//     config.RegisterValidatorsFromAssemblyContaining<Create>();
+// });
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 
-            using var scope = host.Services.CreateScope();
+var app = builder.Build();
 
-            var services = scope.ServiceProvider;
+app.UseMiddleware<ExceptionMiddleware>();
 
-            try
-            {
-                var context = services.GetRequiredService<DataContext>();
-                //var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                await context.Database.MigrateAsync();
-
-                await Seed.SeedData(context);
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, " An error occured during migration");
-            }
-
-            await host.RunAsync();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
 }
+
+//app.UseHttpsRedirection();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseCors("CorsPolicy");
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllers();
+app.MapFallbackToController("Index", "Fallback");
+
+using var scope = app.Services.CreateScope();
+
+var services = scope.ServiceProvider;
+
+try
+{
+    var context = services.GetRequiredService<DataContext>();
+    //var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    await context.Database.MigrateAsync();
+
+    await Seed.SeedData(context);
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, " An error occured during migration");
+}
+
+await app.RunAsync();
