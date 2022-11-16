@@ -1651,11 +1651,11 @@ namespace Persistence
                 };
                 
 
-            await context.Teams.AddRangeAsync(teams);
+            //await context.Teams.AddRangeAsync(teams);
 
-            //await context.Matches.AddRangeAsync(matches);
+            await context.Matches.AddRangeAsync(matches);
 
-            await context.Championships.AddRangeAsync(championships);
+            //await context.Championships.AddRangeAsync(championships);
 
             await context.SaveChangesAsync();
         }
