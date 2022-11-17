@@ -33,7 +33,7 @@ namespace Application.ChampionBets
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == _userAccessor.GetUserId());
 
                 if(user.ChampionBetId != null)
                     return Result<Unit>.Failure("Użytkownik ma stworzone obstawienie mistrza świata, zmień go zamiast dodawać nowy");
@@ -60,7 +60,7 @@ namespace Application.ChampionBets
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if(!result) return Result<Unit>.Failure("Zgłoszenie wyniku nie powiodło się");
+                if(!result) return Result<Unit>.Failure("Zgłoszenie nie powiodło się");
 
                 return Result<Unit>.Success(Unit.Value);
             }

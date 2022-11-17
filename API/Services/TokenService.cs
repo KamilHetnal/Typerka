@@ -28,8 +28,7 @@ namespace API.Services
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email),
-                // new Claim(ClaimTypes.UserData, user.Bio)
+                new Claim(ClaimTypes.Email, user.Email)
             };
             foreach (var role in userRoles)
             {

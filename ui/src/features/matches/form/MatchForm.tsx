@@ -60,7 +60,7 @@ export default observer(function MatchForm({ id }: Props) {
         enableReinitialize initialValues={match}
         onSubmit={values => handleFormSubmit(values)}
       >
-        {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+        {({ handleSubmit, isValid, isSubmitting }) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
             <MyDateInput
               placeholderText='Data meczu'
@@ -93,7 +93,7 @@ export default observer(function MatchForm({ id }: Props) {
               ))}
             />
             <Button
-              disabled={isSubmitting || !dirty || !isValid}
+              disabled={isSubmitting || !isValid}
               loading={isSubmitting} floated='right' positive type='submit'>Dodaj</Button>
             <Link to='/matches'>
               <Button secondary type='button'>Anuluj</Button>

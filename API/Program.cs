@@ -1,6 +1,8 @@
 using Application.Matches;
 var builder = WebApplication.CreateBuilder(args);
 
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddControllers(options =>
 {
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

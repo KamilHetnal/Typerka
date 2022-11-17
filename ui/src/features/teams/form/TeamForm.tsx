@@ -45,6 +45,9 @@ export default observer(function TeamForm({id}: Props) {
         <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
           <MyTextInput placeholder='Nazwa' name='name' label='Nazwa'/>
           <MyTextInput placeholder='Grupa' name='group' label= 'Grupa'/>
+          <MyTextInput placeholder='Najlepszy wynik' name='bestResult' label= 'Najlepszy wynik'/>
+          <MyTextInput placeholder='Data' name='bestResultDate' label= 'Najlepszy wynik - data'/>
+          <MyTextInput placeholder='Info' name='info' label= 'Informacje'/>
           <MyNumberInput label='Rozegrane mecze' placeholder='Rozegrane mecze' name='matchesPlayed' />
           <MyNumberInput label='Wygrane' placeholder='Wygrane' name='wins' />
           <MyNumberInput label='Przegrane' placeholder='Przegrane' name='losses' />

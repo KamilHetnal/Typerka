@@ -35,7 +35,7 @@ namespace Application.Bets
             {
                 var bets = await _context.Bets.Include(u => u.AppUser).Include(m => m.Match).ToArrayAsync();
 
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == _userAccessor.GetUserId());
 
                 var match = await _context.Matches.FirstOrDefaultAsync(x => x.Id == request.Bet.Match.Id);
 
