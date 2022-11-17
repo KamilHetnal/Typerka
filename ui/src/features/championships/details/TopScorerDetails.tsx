@@ -17,7 +17,7 @@ export default observer(function TopScorerDetails({ topScorerId }: Props) {
     return (
         <Grid>
             <Grid.Row >
-                {player ?
+                {topScorerId && player ?
                     <Grid columns={2}>
                         <Grid.Column width={8}>
                             <Header size='medium' content={player.name} />

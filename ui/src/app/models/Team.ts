@@ -1,5 +1,5 @@
-import { Match } from "./Match";
-import { Player } from "./Player";
+import { Match } from './Match';
+import { Player } from './Player';
 
 export interface Team {
   id: string;
@@ -38,6 +38,9 @@ export class TeamFormValues {
   id?: string = undefined;
   name?: string = undefined;
   group?: string = undefined;
+  info?: string = undefined;
+  bestResult?: string = undefined;
+  bestResultDates?: string = undefined;
   matchesPlayed: number = 0;
   wins: number = 0;
   losses: number = 0;
@@ -47,19 +50,20 @@ export class TeamFormValues {
   points: number = 0;
 
   constructor(team?: TeamFormValues) {
-      if(team) {
-          this.id = team.id;
-          this.name = team.name;
-          this.group = team.group;
-          this.matchesPlayed = team.matchesPlayed;
-          this.wins = team.wins;
-          this.losses = team.losses;
-          this.draws = team.draws;
-          this.goalsScored = team.goalsScored;
-          this.goalsConceded = team.goalsConceded;
-          this.points = team.points;
-      }
+    if (team) {
+      this.id = team.id;
+      this.name = team.name;
+      this.group = team.group;
+      this.matchesPlayed = team.matchesPlayed;
+      this.wins = team.wins;
+      this.losses = team.losses;
+      this.draws = team.draws;
+      this.goalsScored = team.goalsScored;
+      this.goalsConceded = team.goalsConceded;
+      this.points = team.points;
+      this.info = team.info;
+      this.bestResultDates = team.bestResultDates;
+      this.bestResult = team.bestResult;
+    }
   }
 }
-
-

@@ -1,18 +1,25 @@
 import { observer } from 'mobx-react-lite'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Button, Grid, Header } from 'semantic-ui-react'
 import { useStore } from '../../../app/stores/store'
+import ChampionBetDetails from '../details/ChampionBetDetails'
 import ChampionDetails from '../details/ChampionDetails'
 import ChampionshipDetailsHeader from '../details/ChampionshipDetailsHeader'
+import TopScorerBetDetails from '../details/TopScorerBetDetails'
 import TopScorerDetails from '../details/TopScorerDetails'
 import ChampionBetForm from '../form/ChampionBetForm'
 import ChampionshipForm from '../form/ChampionshipForm'
 import FilterTeamForm from '../form/FilterTeamForm'
 
 export default observer(function ChampionshipListItem() {
-  const { championshipStore, modalStore: { openModal }, userStore: { getRoles } } = useStore();
+  const { championshipStore, modalStore: { openModal }, userStore: { getRoles, user }, profileStore } = useStore();
   const { championshipsByCountry } = championshipStore
+  const { loadProfile, profile } = profileStore
+
+  useEffect(() => {
+    loadProfile(user?.username!);
+  }, [loadProfile, user])
 
   const startDate = new Date(2022, 10, 20, 17)
   const decodedRole = getRoles();
@@ -31,19 +38,11 @@ export default observer(function ChampionshipListItem() {
           </Grid.Column>
           <Grid.Column width={8}>
             {decodedRole?.includes('admin') ?
-              <>
-                <Button.Group fluid>
-                  <Button
-                    content='Ustaw Zwycięzcę Turnieju'
-                    primary
-                    onClick={() => openModal(<ChampionshipForm id={champ.id} />)} />
-                  <Button.Or text='lub' />
-                  <Button
-                    content='Ustaw Króla Strzelców'
-                    primary
-                    onClick={() => openModal(<ChampionshipForm id={champ.id} />)} />
-                </Button.Group>
-              </>
+              <Button
+                fluid
+                content='Ustaw Zwycięzcę Turnieju'
+                primary
+                onClick={() => openModal(<ChampionshipForm id={champ.id} />)} />
               :
               <Grid columns={2}>
                 <Grid.Column width={8}>
@@ -60,35 +59,59 @@ export default observer(function ChampionshipListItem() {
               {startDate.getTime() >= Date.now() ?
                 <b>
                   Pamietaj, aby obstawić króla strzelców oraz zwycięzcę przed rozpoczęciem turnieju (20-11: 16:00)
-                  <Button.Group fluid>
-                    <Button style={{ marginTop: '1em' }}
-                      content='Wybierz Zwycięzcę Turnieju'
-                      primary basic
-                      onClick={() => openModal(<ChampionBetForm />)} />
-                    <Button style={{ marginTop: '1em' }}
-                      content='Wybierz Króla Strzelców'
-                      primary basic
-                      onClick={() => openModal(<FilterTeamForm />)} />
-                  </Button.Group>
+                  <Grid>
+                    <Grid.Column width={8}>
+                      <Button
+                        fluid
+                        style={{ marginTop: '1em' }}
+                        content='Wybierz Zwycięzcę Turnieju'
+                        primary basic
+                        onClick={() => openModal(<ChampionBetForm />)} />
+                    </Grid.Column>
+                    <Grid.Column width={8}>
+                      <Button
+                        fluid
+                        style={{ marginTop: '1em' }}
+                        content='Wybierz Króla Strzelców'
+                        primary basic
+                        onClick={() => openModal(<FilterTeamForm />)} />
+                    </Grid.Column>
+                  </Grid>
                 </b>
                 :
                 <b>
                   Zobacz typy pozostałych graczy
-                  <Button.Group fluid>
-                    <Button
-                      content='Zwycięzcy'
-                      primary basic
-                      as={NavLink} to='/champion-Bets'
-                    />
-                    <Button
-                      content='Króle'
-                      primary basic
-                      as={NavLink} to='/top-scorer-Bets'
-                    />
-                  </Button.Group>
+                  <Grid>
+                    <Grid.Column width={8}>
+                      <Button
+                        content='Zwycięzcy'
+                        primary basic
+                        as={NavLink} to='/champion-Bets'
+                      />
+                    </Grid.Column>
+                    <Grid.Column width={8}>
+                      <Button
+                        content='Królowie'
+                        primary basic
+                        as={NavLink} to='/top-scorer-Bets'
+                      />
+                    </Grid.Column>
+                  </Grid>
                 </b>
               }
             </Grid.Row>
+            <Grid columns={2}>
+              <Grid.Column width={8}>
+                {profile?.championBet ?
+                  <ChampionBetDetails betChampionId={profile?.championBet.championId!} />
+                  : <></>}
+              </Grid.Column>
+              <Grid.Column width={8}>
+                {profile?.topScorerBet ?
+                  <TopScorerBetDetails betTopScorerId={profile?.topScorerBet.topScorerId!} />
+                  : <></>}
+              </Grid.Column>
+            </Grid>
           </Grid.Column>
         </Grid>
       ))}

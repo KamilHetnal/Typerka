@@ -11,8 +11,7 @@ interface Props {
 }
 
 export default observer(function PlayersList({ players }: Props) {
-    const { userStore: { getRoles }, modalStore: { openModal }, playerStore: {loadPlayersInTeam} } = useStore()
-    const { id } = useParams<{ id: string }>();
+    const { userStore: { getRoles }, modalStore: { openModal } } = useStore()
     const teamPlayers = players.slice().sort((a, b) => a.goals === b.goals ? a.name.localeCompare(b.name) : b.goals - a.goals)
 
     const decodedRoles = getRoles();
@@ -42,8 +41,8 @@ export default observer(function PlayersList({ players }: Props) {
                     }
                 </>
                 :
-                    <Button basic style={{height: '200px'}} size='massive' loading fluid onClick={() => loadPlayersInTeam(id)}>
-                    </Button>
+                    <Segment basic style={{height: '1000px'}}>
+                    </Segment>
             }
         </Segment>
     )
