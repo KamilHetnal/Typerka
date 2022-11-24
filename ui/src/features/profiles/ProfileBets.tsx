@@ -25,14 +25,15 @@ export default observer(function ProfileBets({ profile }: Props) {
             loadMatches()
     }, [matches.length, loadMatches])
     profile.bets.forEach(bet => {
-        matches.forEach(match => {
-            match.matchBets.forEach(matchBet => {
-                if (bet.id === matchBet.id) {
-                    filtredMatches[0].push(match)
-                    filtredMatches[1].push(matchBet)
-                }
+        matches.sort((a, b) => a.matchDate.getTime() - b.matchDate.getTime())
+            .forEach(match => {
+                match.matchBets.forEach(matchBet => {
+                    if (bet.id === matchBet.id) {
+                        filtredMatches[0].push(match)
+                        filtredMatches[1].push(matchBet)
+                    }
+                })
             })
-        })
     });
     useEffect(() => {
         if (profile.championBet?.id)
@@ -59,31 +60,31 @@ export default observer(function ProfileBets({ profile }: Props) {
                     <Header as='h3' constent='Obstawienia meczy' />
                     <Segment>
                         {filtredMatches[0]
-                        .sort((a,b) => a.matchDate.getTime() - b.matchDate.getTime())
-                        .map((match, index) => (
-                            <div key={match.id}>
-                                {currentData >= match.matchDate ?
-                                    <Segment >
-                                        <Grid columns={5}>
-                                            <Grid.Row>
-                                                <Grid.Column width={4}>{format(match.matchDate, 'dd-MM: H:mm')}</Grid.Column>
-                                                <Grid.Column width={4} >
-                                                    <Image floated='right' src={`/assets/flags/${match.homeTeam.name.toLowerCase()}.png`} size='mini' />
-                                                </Grid.Column>
-                                                <Grid.Column width={2} textAlign='center'>
-                                                    {filtredMatches[1][index].homeScore} : {filtredMatches[1][index].awayScore}
-                                                </Grid.Column>
-                                                <Grid.Column width={4}>
-                                                    <Image src={`/assets/flags/${match.awayTeam.name.toLowerCase()}.png`} size='mini' />
-                                                </Grid.Column>
-                                                <Grid.Column width={2}>{filtredMatches[1][index].betPoints}</Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </Segment>
-                                    :
-                                    <></>}
-                            </div>
-                        ))}
+
+                            .map((match, index) => (
+                                <div key={match.id}>
+                                    {currentData >= match.matchDate ?
+                                        <Segment >
+                                            <Grid columns={5}>
+                                                <Grid.Row>
+                                                    <Grid.Column width={4}>{format(match.matchDate, 'dd-MM: H:mm')}</Grid.Column>
+                                                    <Grid.Column width={4} >
+                                                        <Image floated='right' src={`/assets/flags/${match.homeTeam.name.toLowerCase()}.png`} size='mini' />
+                                                    </Grid.Column>
+                                                    <Grid.Column width={2} textAlign='center'>
+                                                        {filtredMatches[1][index].homeScore} : {filtredMatches[1][index].awayScore}
+                                                    </Grid.Column>
+                                                    <Grid.Column width={4}>
+                                                        <Image src={`/assets/flags/${match.awayTeam.name.toLowerCase()}.png`} size='mini' />
+                                                    </Grid.Column>
+                                                    <Grid.Column width={2}>{filtredMatches[1][index].betPoints}</Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
+                                        </Segment>
+                                        :
+                                        <></>}
+                                </div>
+                            ))}
                     </Segment>
                 </Segment.Group>
                 :
