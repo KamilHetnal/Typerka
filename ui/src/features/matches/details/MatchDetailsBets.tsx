@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default observer(function MatchDetailsBets({ bets }: Props) {
-    const { profileStore: { loadProfiles, profiles }, userStore: {getRoles}, betStore: {deleteBet}  } = useStore()
+    const { profileStore: { loadProfiles, profiles }, userStore: { getRoles }, betStore: { deleteBet } } = useStore()
 
     useEffect(() => {
         if (profiles?.length! <= 1)
@@ -34,15 +34,15 @@ export default observer(function MatchDetailsBets({ bets }: Props) {
                 <Grid columns={4} key={bet.id}>
                     <Grid.Row textAlign='center'>
                         {decodedRoles?.includes('admin') ?
-                        <Grid.Column width={1}>
-                            <Button 
-                            negative circular size='mini' icon={'delete'}
-                            onClick={() => deleteBet(bet.id)}/>
-                        </Grid.Column>
-                        :
-                        <Grid.Column width={1}>
-                        </Grid.Column>    
-                    }
+                            <Grid.Column width={1}>
+                                <Button
+                                    negative circular size='mini' icon={'delete'}
+                                    onClick={() => deleteBet(bet.id)} />
+                            </Grid.Column>
+                            :
+                            <Grid.Column width={1}>
+                            </Grid.Column>
+                        }
                         <Grid.Column>
                             <b>
                                 {bet.appUserName}

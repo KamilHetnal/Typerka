@@ -17,7 +17,7 @@ export default observer(function ProfileBets({ profile }: Props) {
     const { loadTeam, team } = teamStore
     const { loadPlayer, player } = playerStore
     const currentData = new Date();
-    const startDate = new Date(2022, 11, 17, 17)
+    const startDate = new Date(2022, 10, 17, 17)
     const filtredMatches: [Match[], Bet[]] = [[], []]
 
     useEffect(() => {

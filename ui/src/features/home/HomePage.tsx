@@ -44,7 +44,7 @@ export default observer(function HomePage() {
                         Zaloguj się
                     </Button>
                     <Button onClick={() => modalStore.openModal(<RegisterForm />)} size='huge' >
-                        Rejestacja
+                        Rejestracja
                     </Button>
                 </Segment>
             )}
