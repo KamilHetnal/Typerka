@@ -58,7 +58,9 @@ export default observer(function ProfileBets({ profile }: Props) {
                     </Segment>
                     <Header as='h3' constent='Obstawienia meczy' />
                     <Segment>
-                        {filtredMatches[0].map((match, index) => (
+                        {filtredMatches[0]
+                        .sort((a,b) => a.matchDate.getTime() - b.matchDate.getTime())
+                        .map((match, index) => (
                             <div key={match.id}>
                                 {currentData >= match.matchDate ?
                                     <Segment >
@@ -66,13 +68,13 @@ export default observer(function ProfileBets({ profile }: Props) {
                                             <Grid.Row>
                                                 <Grid.Column width={4}>{format(match.matchDate, 'dd-MM: H:mm')}</Grid.Column>
                                                 <Grid.Column width={4} >
-                                                    <Image floated='right' src={`/assets/flags/${match.homeTeam.name}.png`} size='mini' />
+                                                    <Image floated='right' src={`/assets/flags/${match.homeTeam.name.toLowerCase()}.png`} size='mini' />
                                                 </Grid.Column>
                                                 <Grid.Column width={2} textAlign='center'>
                                                     {filtredMatches[1][index].homeScore} : {filtredMatches[1][index].awayScore}
                                                 </Grid.Column>
                                                 <Grid.Column width={4}>
-                                                    <Image src={`/assets/flags/${match.awayTeam.name}.png`} size='mini' />
+                                                    <Image src={`/assets/flags/${match.awayTeam.name.toLowerCase()}.png`} size='mini' />
                                                 </Grid.Column>
                                                 <Grid.Column width={2}>{filtredMatches[1][index].betPoints}</Grid.Column>
                                             </Grid.Row>
