@@ -27,7 +27,7 @@ namespace API.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly TokenService _tokenService;
 
-        public AccountController(UserManager<AppUser> userManager, 
+        public AccountController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             TokenService tokenService)
         {
@@ -74,7 +74,7 @@ namespace API.Controllers
             }
 
             return BadRequest("Problem registering User");
-        }        
+        }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
@@ -93,6 +93,29 @@ namespace API.Controllers
             }
 
             return Unauthorized();
+        }
+
+        [Authorize(Policy = "ReqAdminRole")]
+        [HttpPut("edit-password/{id}")]
+        public async Task<ActionResult<UserDto>> ChangePassword(string id, [FromBody] NewPasswordDto password)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return BadRequest("Nie znaleziono użytkownika");
+            }
+            await _userManager.RemovePasswordAsync(user);
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.AddPasswordAsync(user, password.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return CreateUserObject(user, userRoles);
+            }
+
+            return BadRequest("Nie udalo się zmienic hasla");
         }
 
         [Authorize]

@@ -59,9 +59,7 @@ export default observer(function ProfileBets({ profile }: Props) {
                     </Segment>
                     <Header as='h3' constent='Obstawienia meczy' />
                     <Segment>
-                        {filtredMatches[0]
-
-                            .map((match, index) => (
+                        {filtredMatches[0].map((match, index) => (
                                 <div key={match.id}>
                                     {currentData >= match.matchDate ?
                                         <Segment >
