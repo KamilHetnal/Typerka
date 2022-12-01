@@ -70,8 +70,8 @@ export function ComputerItem({ team, index }: Props) {
             </Grid.Column>
             <Grid.Column width={2} >{team.matchesPlayed}</Grid.Column>
             <Grid.Column width={2} >{team.wins}</Grid.Column>
-            <Grid.Column width={2} >{team.losses}</Grid.Column>
             <Grid.Column width={2} >{team.draws}</Grid.Column>
+            <Grid.Column width={2} >{team.losses}</Grid.Column>
             <Grid.Column width={2}>{team.goalsScored} : {team.goalsConceded}</Grid.Column>
             <Grid.Column width={1}>{team.points}</Grid.Column>
         </>
