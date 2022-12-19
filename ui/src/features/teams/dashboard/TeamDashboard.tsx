@@ -7,11 +7,11 @@ import TeamList from './TeamList';
 
 export default observer(function TeamDashboard() {
     const { teamStore } = useStore();
-    const { loadTeams, teamRegistry, loadingInitial } = teamStore;
+    const { loadTeams, loadingInitial } = teamStore;
 
     useEffect(() => {
-        if (teamRegistry.size <= 1) loadTeams()
-    }, [teamRegistry.size, loadTeams])
+        loadTeams()
+    }, [loadTeams])
 
     if (loadingInitial) return <LoadingComponent content='Zbieram dane' />
 

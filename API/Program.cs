@@ -1,4 +1,3 @@
-using Application.Matches;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -38,7 +37,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapFallbackToController("Index", "Fallback");
+
+if(app.Environment.IsProduction())
+{
+    app.MapFallbackToController("Index", "Fallback");
+}
 
 using var scope = app.Services.CreateScope();
 

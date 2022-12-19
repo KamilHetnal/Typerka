@@ -6,7 +6,8 @@ interface Props {
     team: Team
 }
 
-export default function TeamInfo({ team }: Props) {
+export default function 
+TeamInfo({ team }: Props) {
     return (
         <Segment>
             <Item.Group>

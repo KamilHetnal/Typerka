@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import React, { useEffect } from 'react'
-import { Grid, Header } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react'
+import { Header } from 'semantic-ui-react';
+import { Player } from '../../../app/models/Player';
 import { useStore } from '../../../app/stores/store';
 
 interface Props {
@@ -8,30 +9,31 @@ interface Props {
 }
 
 export default observer(function TopScorerDetails({ topScorerId }: Props) {
-    const { playerStore } = useStore();
-    const { player, loadPlayer } = playerStore
+    const { playerStore: { loadPlayer } } = useStore();
+    const [player, setPlayer] = useState<Player>({
+        id: '',
+        teamId: '',
+        name: '',
+        position: '',
+        goals: 0,
+    })
 
     useEffect(() => {
-        if (topScorerId) loadPlayer(topScorerId)
+        if (topScorerId)
+            loadPlayer(topScorerId).then(player => setPlayer(player!))
     }, [topScorerId, loadPlayer])
     return (
-        <Grid>
-            <Grid.Row >
-                {topScorerId && player ?
-                    <Grid columns={2}>
-                        <Grid.Column width={8}>
-                            <Header size='medium' content={player.name} />
-                        </Grid.Column>
-                        <Grid.Column width={8}>
-                            <Header size='medium' content={player.goals} />
-                        </Grid.Column>
-                    </Grid>
-                    :
-                    <>
-                        <b>Króla strzelców poznamy 18 grudnia</b>
-                    </>
-                }
-            </Grid.Row>
-        </Grid>
+        <>
+            {topScorerId && player ?
+                <Header as='h3' textAlign='center'>
+                    <Header.Content style={{marginRight: '10%'}} content={player.name} />
+                    <Header.Content  content={player.goals} />
+                </Header>
+                :
+                <>
+                    <b>Króla strzelców poznamy 18 grudnia</b>
+                </>
+            }
+        </>
     )
 })

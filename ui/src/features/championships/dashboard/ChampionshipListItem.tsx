@@ -80,19 +80,20 @@ export default observer(function ChampionshipListItem() {
                 </b>
                 :
                 <b>
+                  <br/>
                   Zobacz typy pozostałych graczy
                   <Grid>
                     <Grid.Column width={8}>
                       <Button
                         content='Zwycięzcy'
-                        primary basic
+                        primary basic fluid
                         as={NavLink} to='/champion-Bets'
                       />
                     </Grid.Column>
                     <Grid.Column width={8}>
                       <Button
                         content='Królowie'
-                        primary basic
+                        primary basic fluid
                         as={NavLink} to='/top-scorer-Bets'
                       />
                     </Grid.Column>

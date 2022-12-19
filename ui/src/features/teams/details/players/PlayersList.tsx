@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { Button, Grid, Segment, Image } from 'semantic-ui-react'
+import { Button, Grid, Segment } from 'semantic-ui-react'
 import { Player } from '../../../../app/models/Player'
 import { useStore } from '../../../../app/stores/store'
 import PlayerForm from '../../form/PlayerForm'
